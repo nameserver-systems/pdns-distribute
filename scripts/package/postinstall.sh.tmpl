@@ -1,0 +1,18 @@
+#!/bin/bash
+
+{{range $id, $bin := .Bins}}
+chown --recursive --quiet {{$bin}}:{{$bin}} /etc/{{$bin}} {{end}}
+
+{{range $id, $bin := .Bins}}
+chmod --recursive --quiet 640 /etc/{{$bin}}/config.toml {{end}}
+
+{{range $id, $bin := .Bins}}
+chmod --quiet 644 /lib/systemd/system/{{$bin}}.service {{end}}
+
+systemctl daemon-reload
+
+{{range $id, $bin := .Bins}}
+systemctl enable {{$bin}} {{end}}
+
+{{range $id, $bin := .Bins}}
+systemctl restart {{$bin}} {{end}}

@@ -1,0 +1,7 @@
+#!/bin/bash
+
+{{range $id, $bin := .Bins}}
+systemctl stop {{$bin}} {{end}}
+
+{{range $id, $bin := .Bins}}
+systemctl disable {{$bin}} {{end}}

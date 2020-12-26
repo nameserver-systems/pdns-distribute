@@ -1,0 +1,24 @@
+FROM golang:1.14-alpine
+
+# UPDATES
+RUN apk update && apk upgrade
+
+# INSTALL UPX
+RUN apk add upx
+RUN apk add shellcheck
+RUN apk add curl
+RUN apk add make
+RUN apk add git
+RUN apk add gcc
+RUN apk add py-pip
+
+RUN wget -O mc https://dl.min.io/client/mc/release/linux-amd64/mc && mv mc /usr/bin/ && chmod 777 /usr/bin/mc
+
+# INSTALL GOLANGCI LINT
+RUN curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.23.8
+
+# INSTALL GORELEASER
+RUN wget https://github.com/goreleaser/goreleaser/releases/download/v0.128.0/goreleaser_Linux_x86_64.tar.gz && tar -xvzf goreleaser_Linux_x86_64.tar.gz && cp goreleaser /bin/
+
+# CLEANUP
+RUN rm goreleaser README.md LICENSE.md goreleaser_Linux_x86_64.tar.gz

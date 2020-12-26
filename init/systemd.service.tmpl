@@ -1,0 +1,40 @@
+[Unit]
+Description=dns microservice: {{ .Service}}
+After=network.target
+Before=pdns.service
+
+[Service]
+Type=simple
+User={{ .Service}}
+Group={{ .Service}}
+
+LimitNOFILE=100
+
+Restart=always
+RestartSec=20s
+
+ExecStart=/opt/pdns-distribute/{{ .Service}}
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier={{ .Service}}
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+DevicePolicy=closed
+ProtectSystem=strict
+ProtectHome=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=Yes
+LockPersonality=yes
+CapabilityBoundingSet=
+RemoveIPC=yes
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target

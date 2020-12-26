@@ -1,0 +1,52 @@
+site_name: pdns-distribute Docs
+site_url: https://docs.nameserver.systems
+site_author: linxside
+copyright: made 2019 - 2020 with ❤ by linxside
+repo_url: https://gitlab.com/nameserver-systems/pdns-distribute
+repo_name: GitLab
+edit_uri: "docs/"
+strict: true
+theme:
+  name: material
+  language: en
+  font: false
+  direction: ltr
+  palette:
+    scheme: default
+    primary: purple
+  icon:
+    repo: fontawesome/brands/gitlab
+
+markdown_extensions:
+  - smarty
+  - admonition
+  - pymdownx.details
+  - pymdownx.highlight:
+      use_pygments: true
+      linenums: true
+      linenums_style: table
+  - pymdownx.superfences:
+extra_css:
+  - 'css/layout.css'
+plugins:
+  - search:
+      lang: en
+nav:
+  - Home: 'index.md'
+  - Operation:
+      - 'operation/installation.md'
+      - 'operation/configuration.md'
+      - 'operation/observability.md'
+  - Architecture: 'architecture/architecture.md'
+  - Microservices:
+      - 'microservices/pdns-api-proxy.md'
+      - 'microservices/pdns-health-checker.md'
+      - 'microservices/pdns-zone-provider.md'
+      - 'microservices/pdns-secondary-syncer.md'
+  - Developement:
+      - 'development/contribute.md'
+      - 'development/build.md'
+      - 'development/release.md'
+      - 'development/test.md'
+      - 'development/documentation.md'
+  - Credits: 'credits/credits.md'

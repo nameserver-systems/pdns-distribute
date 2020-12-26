@@ -1,0 +1,4 @@
+#!/bin/bash
+
+{{range $id, $bin := .Bins}}
+adduser --system --group --quiet {{$bin}} {{end}}

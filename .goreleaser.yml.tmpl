@@ -1,0 +1,117 @@
+project_name: pdns-distribute
+
+env:
+  - GO111MODULE=on
+
+before:
+  hooks:
+    - go mod download
+
+builds: {{range $id, $path := .Binaries}}
+  - id: "{{$id}}"
+    main: {{$path}}
+    binary: {{$id}}
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+      - -mod=readonly
+    goos:
+      - linux
+    goarch:
+      - amd64
+    goarm:
+      - 7
+    ignore:
+      - goos: darwin
+        goarch: 386
+      - goos: linux
+        goarch: arm
+        goarm: 7
+      - goarm: mips64
+        gomips: hardfloat {{end}}
+    hooks:
+      post: /bin/bash ./scripts/compress_at_release.sh
+
+archives:
+  - id: pdns-distribute-archiv
+    builds: {{range $id, $path := .Binaries}}
+      - {{$id}} {{end}}
+    format: tar.gz
+    files:
+      - LICENSE.txt
+
+nfpms:
+  - id: pdns-distribute-primary-package-latest
+    package_name: pdns-distribute-primary
+    file_name_template: {{"\"{{ .ProjectName }}-primary_latest_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}\""}}
+    builds: {{range $id, $bin := .PrimaryBinaries}}
+      - {{$bin}} {{end}} {{range $id, $bin := .ToolBinaries}}
+      - {{$bin}} {{end}}
+    vendor: linxside
+    homepage: https://nameserver.systems
+    maintainer: linxside {{"<noreply@linxsi.de>"}}
+    description: dns microserivces
+    license: mit
+    formats:
+    - deb
+    dependencies:
+    - git
+    - pdns-server
+    conflicts:
+    - pdns-distribute-secondary
+    bindir: /opt/pdns-distribute
+    files: {{range $id, $bin := .PrimaryBinaries}}
+      "init/{{$bin}}/{{$bin}}.service": "/lib/systemd/system/{{$bin}}.service" {{end}}
+    config_files: {{range $id, $bin := .PrimaryBinaries}}
+      "configs/{{$bin}}/config.toml": "/etc/{{$bin}}/config.toml" {{end}}
+    scripts:
+      preinstall: "scripts/package/primary/preinstall.sh"
+      postinstall: "scripts/package/primary/postinstall.sh"
+      preremove: "scripts/package/primary/preremove.sh"
+      postremove: "scripts/package/primary/postremove.sh"
+  - id: pdns-distribute-secondary-package-latest
+    package_name: pdns-distribute-secondary
+    file_name_template: {{"\"{{ .ProjectName }}-secondary_latest_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}\""}}
+    builds: {{range $id, $bin := .SecondaryBinaries}}
+      - {{$bin}} {{end}}
+    vendor: linxside
+    homepage: https://nameserver.systems
+    maintainer: linxside {{"<noreply@linxsi.de>"}}
+    description: dns microserivces
+    license: mit
+    formats:
+    - deb
+    dependencies:
+    - git
+    - pdns-server
+    conflicts:
+    - pdns-distribute-primary
+    bindir: /opt/pdns-distribute
+    files: {{range $id, $bin := .SecondaryBinaries}}
+      "init/{{$bin}}/{{$bin}}.service": "/lib/systemd/system/{{$bin}}.service" {{end}}
+    config_files: {{range $id, $bin := .SecondaryBinaries}}
+      "configs/{{$bin}}/config.toml": "/etc/{{$bin}}/config.toml" {{end}}
+    scripts:
+      preinstall: "scripts/package/secondary/preinstall.sh"
+      postinstall: "scripts/package/secondary/postinstall.sh"
+      preremove: "scripts/package/secondary/preremove.sh"
+      postremove: "scripts/package/secondary/postremove.sh"
+
+checksum:
+  name_template: {{"\"{{ .ProjectName }}_latest_checksums.txt\""}}
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+release:
+  gitlab:
+      owner: nameserver-systems
+      name: pdns-distribute
+
+dist: bin/

@@ -61,7 +61,6 @@ golangci-lint-optional:
 	golangci-lint run --timeout 3m -p style,complexity,performance,unused -D gochecknoglobals,lll,nolintlint,testpackage,wsl ./...
 
 check-shell-scripts: generate-goreleaser-config
-	@shellcheck ./scripts/*.sh
 	@shellcheck ./scripts/package/primary/*.sh
 	@shellcheck ./scripts/package/secondary/*.sh
 

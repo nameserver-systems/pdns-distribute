@@ -20,18 +20,17 @@ builds: {{range $id, $path := .Binaries}}
       - linux
     goarch:
       - amd64
+      - arm
+      - arm64
     goarm:
       - 7
     ignore:
       - goos: darwin
         goarch: 386
-      - goos: linux
-        goarch: arm
-        goarm: 7
       - goarm: mips64
-        gomips: hardfloat {{end}}
+        gomips: hardfloat
     hooks:
-      post: /bin/bash ./scripts/compress_at_release.sh
+      post: upx {{"\"{{ .Path }}\""}} {{end}}
 
 archives:
   - id: pdns-distribute-archiv

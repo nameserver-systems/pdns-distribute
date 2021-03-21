@@ -2,7 +2,6 @@ package utils
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"time"
 
@@ -86,11 +85,11 @@ func GetZoneSerialFromSecondary(secondary servicediscovery.ResolvedService, hs *
 	zone := transferobject.Statemap
 
 	if len(zone) != expectedzonecount {
-		return int32(0), errors.New("got unexpected zone count")
+		return int32(0), errUnexpectedZoneCount
 	}
 
 	if _, exists := zone[zoneid]; !exists {
-		return int32(0), errors.New("zoneid not found in statemap")
+		return int32(0), errZoneIDNotInStateMap
 	}
 
 	return zone[zoneid], nil

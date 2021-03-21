@@ -1,7 +1,6 @@
 package servicediscovery
 
 import (
-	"errors"
 	"net/url"
 	"time"
 
@@ -39,7 +38,7 @@ func StartServiceDiscoveryAndRegisterService(sr *ServiceRegistration) (*ServiceD
 
 func (sd *ServiceDiscovery) startServiceDiscoveryConnection(sr *ServiceRegistration) error {
 	if !sr.isURLSet() {
-		return errors.New("ServiceDiscovery: No URL was set")
+		return errNoURL
 	}
 
 	sd.insertServiceRegistration(sr)

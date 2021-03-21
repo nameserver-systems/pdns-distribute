@@ -6,7 +6,6 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-
 	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
 	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 )

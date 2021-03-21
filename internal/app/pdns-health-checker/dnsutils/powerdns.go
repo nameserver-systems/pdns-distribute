@@ -2,7 +2,6 @@ package dnsutils
 
 import (
 	"encoding/json"
-	"errors"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -111,17 +110,16 @@ func GetZoneSerialFromFromPrimary(pdnsconnection modelpowerdns.PDNSconnectionobj
 
 	powerdnsapicalltotal.Inc()
 
-	parseerr := json.Unmarshal([]byte(response), &zone)
-	if parseerr != nil {
+	if parseerr := json.Unmarshal([]byte(response), &zone); parseerr != nil {
 		return int32(0), parseerr
 	}
 
 	if len(zone) != expectedzonecount {
-		return int32(0), errors.New("got more zones than expected")
+		return int32(0), errTooMuchZones
 	}
 
 	if zone[0].ID != zoneid {
-		return int32(0), errors.New("zoneid mismatch, can't get serial")
+		return int32(0), errZoneIDMismatch
 	}
 
 	return zone[0].Serial, nil

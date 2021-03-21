@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -77,7 +76,7 @@ func getZoneIDFromRequestBody(r *http.Request, zoneid string) (string, error) {
 	}
 
 	if hasNotFoundZoneID(zoneid) {
-		return "", errors.New("can't find ZoneID")
+		return "", errZoneIDNotFound
 	}
 
 	return zoneid, nil
@@ -103,7 +102,7 @@ func GetHostAndPortFromURL(url string) (string, error) {
 
 	address := urlobject.Host
 	if address == "" {
-		return "", errors.New("parse error: empty extracted address")
+		return "", errEmptyHostAddress
 	}
 
 	return address, parseerr
@@ -117,7 +116,7 @@ func GetHostnameFromURL(url string) (string, error) {
 
 	hostname := urlobject.Hostname()
 	if hostname == "" {
-		return "", errors.New("parse error: empty extracted hostname")
+		return "", errEmptyHostname
 	}
 
 	return hostname, parseerr
@@ -153,8 +152,9 @@ func ExecutePowerDNSRequest(method, url, apitoken string, body io.Reader) (strin
 	}
 
 	if 200 > response.StatusCode || response.StatusCode >= 300 {
-		return "", errors.New("couldn't get valid answer from powerdns api, http status is " +
-			strconv.Itoa(response.StatusCode) + " with message: " + string(responsebody))
+		logger.ErrorLog("invalid pdns answer with http status" + strconv.Itoa(response.StatusCode) + " with message: " + string(responsebody))
+
+		return "", errInvalidPDNSAPIAnswer
 	}
 
 	return string(responsebody), nil

@@ -1,7 +1,6 @@
 package certificate
 
 import (
-	"errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,7 +11,6 @@ import (
 
 func EnsureCertificatePaths(fqdn string, serviceconfig *config.ServiceConfiguration) (certpath, keypath string,
 	err error) {
-	pathNotAbsoluteErr := errors.New("certificate or keypath are not absolute")
 
 	certpath = serviceconfig.CertPath
 	keypath = serviceconfig.KeyPath
@@ -28,7 +26,7 @@ func EnsureCertificatePaths(fqdn string, serviceconfig *config.ServiceConfigurat
 	}
 
 	if !filepath.IsAbs(certpath) || !filepath.IsAbs(keypath) {
-		return "", "", pathNotAbsoluteErr
+		return "", "", errCertPathNotAbsolute
 	}
 
 	if !fileExist(certpath) || !fileExist(keypath) {

@@ -4,9 +4,8 @@ package servicediscovery
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	consul "github.com/hashicorp/consul/api"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestServiceDiscovery_newClient(t *testing.T) {

@@ -2,7 +2,6 @@
 package powerdnsutils
 
 import (
-	"errors"
 	"net"
 	"strings"
 	"time"
@@ -89,7 +88,7 @@ func GetSOARecord(zoneid, address, net string) (zonesoa string, err error) {
 	}
 
 	if answer.Rcode != dns.RcodeSuccess {
-		err = errors.New("soa request was not successful")
+		err = errSOARequestFailed
 
 		return
 	}

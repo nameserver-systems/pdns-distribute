@@ -33,7 +33,7 @@ func ConvertStringToInt(s string) (int, error) {
 func GenerateUUID() (string, error) {
 	generatedUUID, err := uuid.NewUUID()
 	if err != nil {
-		return getHashedTime(), nil
+		return getHashedTime(), err
 	}
 
 	uuidstring := generatedUUID.String()

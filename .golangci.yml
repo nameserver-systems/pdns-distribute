@@ -1,0 +1,39 @@
+run:
+  concurrency: 4
+  timeout: 3m
+  issues-exit-code: 1
+  tests: true
+  skip-dirs: []
+  skip-dirs-use-default: true
+  skip-files: []
+  modules-download-mode: readonly
+  allow-parallel-runners: true
+output:
+  format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+  uniq-by-line: true
+  sort-results: false
+linters:
+  enable:
+    - megacheck
+    - govet
+    - unconvert
+    - prealloc
+    - nlreturn
+    - goprintffuncname
+    - golint
+    - goimports
+    - goerr113
+    - godox
+    - gocritic
+    - goconst
+    - gci
+    - dupl
+  disable-all: false
+  presets:
+    - bugs
+    - unused
+    - complexity
+    - performance
+  fast: false

@@ -34,7 +34,7 @@ clean:
 
 lint: inspect
 inspect: govet golangci-all check-shell-scripts
-format: goformat gofix golangci-lint-format
+format: goformat gofix
 
 gofix:
 	@for f in $(PATHS); do go fix $${f}; done
@@ -42,23 +42,14 @@ gofix:
 goformat:
 	@for f in $(PATHS); do go fmt $${f}; done
 
-golangci-lint-format:
-	golangci-lint run --timeout 3m --fix -p format,bugs ./...
-
 goimport:
 	@goimports -w ./
 
 govet:
 	@for f in $(PATHS); do go vet $${f}; done	
 
-golangci-all: golangci-lint-necessary golangci-lint-optional
-	#golangci-lint run -D gochecknoglobals,lll,goerr113,gofumpt --timeout 3m --enable-all ./...
-
-golangci-lint-necessary:
-	golangci-lint run --timeout 3m -p format,bugs ./...
-
-golangci-lint-optional:
-	golangci-lint run --timeout 3m -p style,complexity,performance,unused -D gochecknoglobals,lll,nolintlint,testpackage,wsl ./...
+golangci-all:
+	golangci-lint run --fix ./...
 
 check-shell-scripts: generate-goreleaser-config
 	@shellcheck ./scripts/package/primary/*.sh

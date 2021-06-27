@@ -22,7 +22,7 @@ require (
 	github.com/rs/zerolog v1.20.0
 	github.com/shirou/gopsutil v3.20.11+incompatible
 	github.com/spf13/cast v1.3.1 // indirect
-	github.com/spf13/cobra v1.1.1
+	github.com/spf13/cobra v1.1.3
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/viper v1.8.1
 	github.com/stretchr/testify v1.7.0

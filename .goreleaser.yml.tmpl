@@ -60,10 +60,12 @@ nfpms:
     conflicts:
     - pdns-distribute-secondary
     bindir: /opt/pdns-distribute
-    files: {{range $id, $bin := .PrimaryBinaries}}
-      "init/{{$bin}}/{{$bin}}.service": "/lib/systemd/system/{{$bin}}.service" {{end}}
-    config_files: {{range $id, $bin := .PrimaryBinaries}}
-      "configs/{{$bin}}/config.toml": "/etc/{{$bin}}/config.toml" {{end}}
+    contents: {{range $id, $bin := .PrimaryBinaries}}
+      - src: "init/{{$bin}}/{{$bin}}.service"
+        dst: "/lib/systemd/system/{{$bin}}.service"{{end}}{{range $id, $bin := .PrimaryBinaries}}
+      - src: "configs/{{$bin}}/config.toml"
+        dst: "/etc/{{$bin}}/config.toml"
+        type: config{{end}}
     scripts:
       preinstall: "scripts/package/primary/preinstall.sh"
       postinstall: "scripts/package/primary/postinstall.sh"
@@ -87,10 +89,12 @@ nfpms:
     conflicts:
     - pdns-distribute-primary
     bindir: /opt/pdns-distribute
-    files: {{range $id, $bin := .SecondaryBinaries}}
-      "init/{{$bin}}/{{$bin}}.service": "/lib/systemd/system/{{$bin}}.service" {{end}}
-    config_files: {{range $id, $bin := .SecondaryBinaries}}
-      "configs/{{$bin}}/config.toml": "/etc/{{$bin}}/config.toml" {{end}}
+    contents: {{range $id, $bin := .SecondaryBinaries}}
+      - src: "init/{{$bin}}/{{$bin}}.service"
+        dst: "/lib/systemd/system/{{$bin}}.service"{{end}}{{range $id, $bin := .SecondaryBinaries}}
+      - src: "configs/{{$bin}}/config.toml"
+        dst: "/etc/{{$bin}}/config.toml"
+        type: config{{end}}
     scripts:
       preinstall: "scripts/package/secondary/preinstall.sh"
       postinstall: "scripts/package/secondary/postinstall.sh"

@@ -1,7 +1,7 @@
 # Build
 
 ## Requirements
-* Go > 1.15.X
+* Go > 1.16
 * goreleaser
 * upx
 * golangci-lint

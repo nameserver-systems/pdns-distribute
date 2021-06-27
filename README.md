@@ -45,7 +45,7 @@ Microservices:
 
 ## Dependencies
 
-* go (>= 1.15)
+* go (>= 1.16)
 * podman
 * golangci-lint
 * goreleaser

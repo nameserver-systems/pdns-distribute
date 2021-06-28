@@ -17,7 +17,7 @@ require (
 	github.com/mvmaasakkers/certificates v0.6.0
 	github.com/nats-io/jwt v1.2.2 // indirect
 	github.com/nats-io/nats.go v1.11.0
-	github.com/prometheus/client_golang v1.9.0
+	github.com/prometheus/client_golang v1.11.0
 	github.com/rs/zerolog v1.23.0
 	github.com/shirou/gopsutil v3.20.11+incompatible
 	github.com/spf13/cobra v1.1.3

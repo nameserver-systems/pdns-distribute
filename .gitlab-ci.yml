@@ -92,11 +92,15 @@ make-documentation:
   stage: build
   resource_group: doc-production
   rules:
-    - changes:
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+      when: always
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+      changes:
         - "**/*.md"
         - "mkdocs.yml"
         - "poetry.lock"
         - "pyproject.toml"
+      when: always
   artifacts:
     expire_in: 1h
     paths:

@@ -13,7 +13,7 @@ require (
 	github.com/hashicorp/go-hclog v0.15.0 // indirect
 	github.com/hashicorp/go-immutable-radix v1.3.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
-	github.com/miekg/dns v1.1.35
+	github.com/miekg/dns v1.1.43
 	github.com/mvmaasakkers/certificates v0.6.0
 	github.com/nats-io/jwt v1.2.2 // indirect
 	github.com/nats-io/nats.go v1.11.0

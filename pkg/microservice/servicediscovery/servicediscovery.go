@@ -105,7 +105,7 @@ func (sd *ServiceDiscovery) insertServiceRegistration(sr *ServiceRegistration) {
 
 func generateHealthCheckRegistration(sr *ServiceRegistration) *consul.AgentServiceCheck {
 	return &consul.AgentServiceCheck{
-		CheckID:                        uuid.New().String(),
+		CheckID:                        uuid.NewString(),
 		TTL:                            (sr.ServiceDiscoveryHealthPingIntervall * 3).String(),
 		DeregisterCriticalServiceAfter: (sr.ServiceDiscoveryHealthPingIntervall * 20).String(),
 	}

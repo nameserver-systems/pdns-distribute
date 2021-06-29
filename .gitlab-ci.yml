@@ -9,6 +9,10 @@ stages:
   - build
   - deploy
 
+workflow:
+  rules:
+    - when: always
+
 .go-cache:
   variables:
     GOPATH: $CI_PROJECT_DIR/.go
@@ -22,6 +26,8 @@ stages:
 test:
   stage: test
   extends: .go-cache
+  rules:
+    - when: always
   script:
     - make test
 
@@ -29,6 +35,8 @@ golinting:
   stage: inspect
   extends: .go-cache
   allow_failure: false
+  rules:
+    - when: always
   script:
     - make golangci-all
 
@@ -36,8 +44,7 @@ check-shell-scripts:
   stage: inspect
   allow_failure: false
   rules:
-    - changes:
-      - "**.sh"
+    - when: always
   script:
     - make check-shell-scripts
 

@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"flag"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -123,7 +122,7 @@ func writeFile(rootpath string, outputfilename string, filledtemplate *bytes.Buf
 		log.Print(direrr)
 	}
 
-	fwriteerr := ioutil.WriteFile(filepath.Join(rootpath, outputfilename), filledtemplate.Bytes(), 0o600)
+	fwriteerr := os.WriteFile(filepath.Join(rootpath, outputfilename), filledtemplate.Bytes(), 0o600)
 	if fwriteerr != nil {
 		log.Fatal(fwriteerr)
 	}

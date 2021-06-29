@@ -1,7 +1,6 @@
 package certificate
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -71,12 +70,12 @@ func generateCertificates(certificatepath, keypath, fqdn string) error {
 }
 
 func writeCertFiles(certificatepath string, cert []byte, keypath string, key []byte) error {
-	wrcerterr := ioutil.WriteFile(certificatepath, cert, 0o600)
+	wrcerterr := os.WriteFile(certificatepath, cert, 0o600)
 	if wrcerterr != nil {
 		return wrcerterr
 	}
 
-	wrkeyerr := ioutil.WriteFile(keypath, key, 0o600)
+	wrkeyerr := os.WriteFile(keypath, key, 0o600)
 	if wrkeyerr != nil {
 		return wrkeyerr
 	}
@@ -85,12 +84,12 @@ func writeCertFiles(certificatepath string, cert []byte, keypath string, key []b
 }
 
 func writeCAFiles(cacertpath string, cacert []byte, cakeypath string, cakey []byte) error {
-	wrcacerterr := ioutil.WriteFile(cacertpath, cacert, 0o600)
+	wrcacerterr := os.WriteFile(cacertpath, cacert, 0o600)
 	if wrcacerterr != nil {
 		return wrcacerterr
 	}
 
-	wrcakeyerr := ioutil.WriteFile(cakeypath, cakey, 0o600)
+	wrcakeyerr := os.WriteFile(cakeypath, cakey, 0o600)
 
 	if wrcakeyerr != nil {
 		return wrcakeyerr

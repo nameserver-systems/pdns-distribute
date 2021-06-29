@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"net/http"
 	neturl "net/url"
 	"strconv"
@@ -51,7 +50,7 @@ func ensureTrailingDot(zoneid string) string {
 func getZoneIDFromRequestBody(r *http.Request, zoneid string) (string, error) {
 	var result map[string]interface{}
 
-	incomingbodybytes, readerr := ioutil.ReadAll(r.Body)
+	incomingbodybytes, readerr := io.ReadAll(r.Body)
 	if readerr != nil {
 		return "", readerr
 	}
@@ -61,8 +60,8 @@ func getZoneIDFromRequestBody(r *http.Request, zoneid string) (string, error) {
 		return "", closerr
 	}
 
-	// necessary due to ioutil.readall clears after read the body and body is used for proxy
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(incomingbodybytes))
+	// necessary due to io.ReadAll clears after read the body and body is used for proxy
+	r.Body = io.NopCloser(bytes.NewBuffer(incomingbodybytes))
 
 	unmarshalerr := json.Unmarshal(incomingbodybytes, &result)
 	if unmarshalerr != nil {
@@ -146,7 +145,7 @@ func ExecutePowerDNSRequest(method, url, apitoken string, body io.Reader) (strin
 
 	defer CloseResponseBody(response)
 
-	responsebody, responsereaderr := ioutil.ReadAll(response.Body)
+	responsebody, responsereaderr := io.ReadAll(response.Body)
 	if responsereaderr != nil {
 		return "", responsereaderr
 	}

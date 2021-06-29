@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
@@ -129,7 +128,7 @@ func Test_getHashedTime(t *testing.T) {
 
 func Test_EnsurePathExist(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
-		tmpDir, dirErr := ioutil.TempDir("", "")
+		tmpDir, dirErr := os.MkdirTemp("", "")
 		require.NoError(t, dirErr)
 		require.DirExists(t, tmpDir)
 

@@ -3,7 +3,7 @@ package internalserviceproxy
 import (
 	"bytes"
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -88,7 +88,7 @@ func defaultProxy(respond http.ResponseWriter, incomingrequest *http.Request) {
 
 	powerdnsapirequeststotal.Inc()
 
-	incomingbodybytes, readerr := ioutil.ReadAll(incomingrequest.Body)
+	incomingbodybytes, readerr := io.ReadAll(incomingrequest.Body)
 	if readerr != nil {
 		logger.ErrorErrLog(readerr)
 	}
@@ -117,7 +117,7 @@ func defaultProxy(respond http.ResponseWriter, incomingrequest *http.Request) {
 
 	defer httputils.CloseResponseBody(proxyresponse)
 
-	proxyresponsebody, proxyresponsereaderr := ioutil.ReadAll(proxyresponse.Body)
+	proxyresponsebody, proxyresponsereaderr := io.ReadAll(proxyresponse.Body)
 	if proxyresponsereaderr != nil {
 		logger.ErrorErrLog(proxyresponsereaderr)
 	}

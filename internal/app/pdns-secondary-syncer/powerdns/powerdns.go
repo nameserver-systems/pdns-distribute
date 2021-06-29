@@ -3,7 +3,6 @@ package powerdns
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"sync"
@@ -199,7 +198,7 @@ func CreateZonePerAPI(zoneid string, zonedata modelevent.ZoneDataReplyEvent, con
 func createZonePerZoneFile(zoneid string, zonedata modelevent.ZoneDataReplyEvent) error {
 	tempfilepath := ""
 
-	temporaryfile, fileerr := ioutil.TempFile("", zoneid+"*.zone")
+	temporaryfile, fileerr := os.CreateTemp("", zoneid+"*.zone")
 	if fileerr != nil {
 		return fileerr
 	}

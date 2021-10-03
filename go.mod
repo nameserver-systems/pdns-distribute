@@ -16,7 +16,7 @@ require (
 	github.com/miekg/dns v1.1.43
 	github.com/mvmaasakkers/certificates v0.6.0
 	github.com/nats-io/jwt v1.2.2 // indirect
-	github.com/nats-io/nats.go v1.11.0
+	github.com/nats-io/nats.go v1.12.3
 	github.com/prometheus/client_golang v1.11.0
 	github.com/rs/zerolog v1.23.0
 	github.com/shirou/gopsutil v3.21.6+incompatible

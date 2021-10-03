@@ -134,4 +134,4 @@ deploy-documentation:
         - "pyproject.toml"
       when: always
   script:
-    - "lftp -c \"set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_DOC,$FTPS_PW_DOC $FTPS_HOST_DOC; mirror --verbose --reverse --delete site/  ./; bye\" "
+    - "lftp -c \"set ftp:ssl-force true; set ssl:verify-certificate false; open -u $FTPS_USER_DOC,$FTPS_PW_DOC $FTPS_HOST_DOC; mirror --verbose --reverse --delete site/  ./; bye\" "

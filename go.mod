@@ -18,7 +18,7 @@ require (
 	github.com/nats-io/jwt v1.2.2 // indirect
 	github.com/nats-io/nats.go v1.11.0
 	github.com/prometheus/client_golang v1.11.0
-	github.com/rs/zerolog v1.23.0
+	github.com/rs/zerolog v1.25.0
 	github.com/shirou/gopsutil v3.21.6+incompatible
 	github.com/spf13/cobra v1.2.1
 	github.com/spf13/viper v1.8.1

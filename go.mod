@@ -15,7 +15,7 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/miekg/dns v1.1.43
 	github.com/mvmaasakkers/certificates v0.6.0
-	github.com/nats-io/jwt v1.2.2 // indirect
+	github.com/nats-io/nats-server/v2 v2.6.1 // indirect
 	github.com/nats-io/nats.go v1.12.3
 	github.com/prometheus/client_golang v1.11.0
 	github.com/rs/zerolog v1.25.0

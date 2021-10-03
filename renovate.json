@@ -4,5 +4,5 @@
     "enabled": true
   },
   "updateLockFiles": true,
-  "postUpdateOptions": ["gomodTidy"]
+  "postUpdateOptions": ["gomodTidy","gomodUpdateImportPaths"]
 }

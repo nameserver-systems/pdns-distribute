@@ -1,4 +1,4 @@
-module gitlab.com/nameserver-systems/pdns-distribute
+module github.com/nameserver-systems/pdns-distribute
 
 go 1.17
 

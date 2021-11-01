@@ -8,16 +8,16 @@ import (
 	"sync"
 	"time"
 
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelevent"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/powerdnsutils"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelevent"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/powerdnsutils"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var zonemapmutex sync.Map

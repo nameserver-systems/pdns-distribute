@@ -9,10 +9,10 @@ import (
 	"net/url"
 	"runtime"
 
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/servutils"
+	msframe "github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/servutils"
-	msframe "gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

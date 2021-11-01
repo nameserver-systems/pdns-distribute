@@ -5,16 +5,16 @@ import (
 	"os/exec"
 	"time"
 
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/dnsutils"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallsigningsync"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/eventutils"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/dnsutils"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallsigningsync"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/eventutils"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

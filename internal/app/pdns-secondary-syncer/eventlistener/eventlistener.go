@@ -1,16 +1,16 @@
 package eventlistener
 
 import (
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/modeljob"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/primaryzoneprovider"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/worker"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/modeljob"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/primaryzoneprovider"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/worker"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

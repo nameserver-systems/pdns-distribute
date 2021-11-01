@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"time"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelevent"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelevent"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 func PublishDeleteZoneEvent(ms *microservice.Microservice, topic string, zoneid string) {

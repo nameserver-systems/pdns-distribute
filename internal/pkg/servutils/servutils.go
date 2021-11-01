@@ -5,8 +5,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	msframe "gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	msframe "github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 // WaitToShutdownServer Waits for Interrupt Signal to execute a function which handles closing.

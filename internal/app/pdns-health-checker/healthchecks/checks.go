@@ -1,15 +1,15 @@
 package healthchecks
 
 import (
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/eventcheck"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallcheck"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallensurensec3"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/eventcheck"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallcheck"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallensurensec3"
 
 	// nolint:lll
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallsigningsync"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallsigningsync"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 )
 
 func StartAllHealthChecks(msobject *microservice.Microservice, configobject *config.ServiceConfiguration,

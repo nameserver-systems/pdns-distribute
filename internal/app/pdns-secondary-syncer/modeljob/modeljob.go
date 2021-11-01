@@ -1,9 +1,9 @@
 package modeljob
 
 import (
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nats-io/nats.go"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
 )
 
 const (

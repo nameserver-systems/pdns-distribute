@@ -6,11 +6,11 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/certificate"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
-	msframe "gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/certificate"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
+	msframe "github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

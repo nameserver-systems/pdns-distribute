@@ -4,10 +4,10 @@ import (
 	"runtime"
 	"strconv"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/modeljob"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/modeljob"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var Workerqueue chan *modeljob.PowerDNSAPIJob //nolint:gochecknoglobals

@@ -5,12 +5,12 @@ import (
 	"sync"
 
 	"github.com/miekg/dns"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

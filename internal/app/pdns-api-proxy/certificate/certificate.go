@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/mvmaasakkers/certificates/cert"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/config"
 )
 
 func EnsureCertificatePaths(fqdn string, serviceconfig *config.ServiceConfiguration) (certpath, keypath string,

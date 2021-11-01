@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-tool/cli"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-tool/cli"
 )
 
 func main() {

@@ -1,12 +1,12 @@
 package messaging
 
 import (
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/powerdns"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/powerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
 )
 
 var requesttotal = promauto.NewCounter(prometheus.CounterOpts{Name: "zoneprovider_request_total", Help: "The total count of requests"})

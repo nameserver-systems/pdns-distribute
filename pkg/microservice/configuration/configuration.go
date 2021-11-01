@@ -5,9 +5,9 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
 	"github.com/spf13/viper"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
 )
 
 type Configurationobject struct {

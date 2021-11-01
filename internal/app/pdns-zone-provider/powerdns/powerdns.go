@@ -6,15 +6,15 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelevent"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/powerdnsutils"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelevent"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/powerdnsutils"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 )
 
 func AppendIDToTopic(topic string, secondary servicediscovery.ResolvedService) string {

@@ -3,8 +3,8 @@ package messaging
 import (
 	"time"
 
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 type MessageBroker struct {

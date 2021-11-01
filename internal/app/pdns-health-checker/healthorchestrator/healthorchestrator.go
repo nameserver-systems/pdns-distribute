@@ -4,16 +4,16 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/dnsutils"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/servicediscovery"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/dnsutils"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/servicediscovery"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

@@ -1,6 +1,6 @@
 package config
 
-import "gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
+import "github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 
 type ServiceConfiguration struct {
 	AddEventTopic    string

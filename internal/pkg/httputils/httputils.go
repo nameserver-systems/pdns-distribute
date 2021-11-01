@@ -11,7 +11,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 func CopyHTTPHeader(src, dest http.Header) {

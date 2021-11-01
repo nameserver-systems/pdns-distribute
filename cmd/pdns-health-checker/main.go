@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"runtime"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthorchestrator"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/servutils"
-	msframe "gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthorchestrator"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/servutils"
+	msframe "github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var (

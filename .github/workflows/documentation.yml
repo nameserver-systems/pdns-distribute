@@ -1,0 +1,26 @@
+name: documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  documentation:
+    container: registry.gitlab.com/nameserver-systems/images/ci/python
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install requirements
+        run: poetry install --no-dev
+
+      - name: Make docs
+        run: poetry run mkdocs build --clean --strict
+
+      - name: Upload docs
+        run: lftp -c \"set ftp:ssl-force true; set ssl:verify-certificate false; open -u $FTPS_USER_DOC,$FTPS_PW_DOC $FTPS_HOST_DOC; mirror --verbose --reverse --delete site/  ./; bye\"

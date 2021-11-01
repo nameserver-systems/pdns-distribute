@@ -3,7 +3,7 @@ package config
 import (
 	"time"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 )
 
 type ServiceConfiguration struct {

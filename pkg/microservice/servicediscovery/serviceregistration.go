@@ -5,7 +5,7 @@ import (
 	"time"
 
 	consul "github.com/hashicorp/consul/api"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
 )
 
 // ServiceRegistration used for register service in service discovery.

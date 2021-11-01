@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/configuration"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/metrics"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/configuration"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/metrics"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
 )
 
 type Microservice struct {

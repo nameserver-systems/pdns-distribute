@@ -1,9 +1,9 @@
 package externalserviceproxy
 
 import (
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/messaging"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/messaging"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 )
 
 func StartExternalServiceProxy(ms *microservice.Microservice) error {

@@ -2,8 +2,8 @@
 package cli
 
 import (
+	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-tool/resync/zone"
 	"github.com/spf13/cobra"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/app/pdns-tool/resync/zone"
 )
 
 var resynczonecmd = &cobra.Command{

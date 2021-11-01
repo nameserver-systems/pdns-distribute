@@ -5,10 +5,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 func TransferPowerDNSZonesIntoZoneStateMap(actualzones []modelpowerdns.Zone) modelzone.Zonestatemap {

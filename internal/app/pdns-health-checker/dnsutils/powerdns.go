@@ -3,11 +3,11 @@ package dnsutils
 import (
 	"encoding/json"
 
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
+	"github.com/nameserver-systems/pdns-distribute/internal/pkg/powerdnsutils"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
-	"gitlab.com/nameserver-systems/pdns-distribute/internal/pkg/powerdnsutils"
 )
 
 var (

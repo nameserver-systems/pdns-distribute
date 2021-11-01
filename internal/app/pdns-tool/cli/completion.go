@@ -4,8 +4,8 @@ package cli
 import (
 	"os"
 
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/spf13/cobra"
-	"gitlab.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
 
 var completionCmd = &cobra.Command{

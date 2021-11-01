@@ -1,6 +1,6 @@
 # pdns-distribute
 
-> Repository is located at https://gitlab.com/nameserver-systems/pdns-distribute
+> Repository is located at https://github.com/nameserver-systems/pdns-distribute
 
 The project [nameserver.systems](https://nameserver.systems) / pdns-distribute contains a set of go based microservices
 for syncing multiple powerdns nameservers. The original goal was to build the perfect authoritative dns server

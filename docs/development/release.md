@@ -10,7 +10,7 @@ make snapshot-release
 ## Build Production Release
 
 !!! important
-    Needs environment variable `GITLAB_TOKEN` set for publishing releases and changelogs depending on
+    Needs environment variable `GITHUB_TOKEN` set for publishing releases and changelogs depending on
     conventional commits.
     
 
@@ -28,7 +28,7 @@ git push
 3. Build release.
 
 !!! caution
-    The build and deployment of the production release / binaries is part of the gitlab pipeline.
+    The build and deployment of the production release / binaries is part of the github pipeline.
 
 ```bash
 make release

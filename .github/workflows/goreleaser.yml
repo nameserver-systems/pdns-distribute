@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Deploy artifacts to latest path
-        run: lftp -c \"set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_REPO,$FTPS_PW_REPO $FTPS_HOST_REPO; mirror --verbose --include-glob='*.deb' --include-glob='*.txt' --reverse --no-recursion --delete bin/  ./latest/; bye\"
+        run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_REPO,$FTPS_PW_REPO $FTPS_HOST_REPO; mirror --verbose --include-glob='*.deb' --include-glob='*.txt' --reverse --no-recursion --delete bin/  ./latest/; bye"
 
       - name: Deploy artifacts to versioned path
-        run: lftp -c \"set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_REPO,$FTPS_PW_REPO $FTPS_HOST_REPO; mirror --verbose --include-glob='*.deb' --include-glob='*.txt' --include-glob='*.tar.gz' --reverse --no-recursion --delete bin/  ./archive/$GITHUB_REF/; bye\"
+        run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_REPO,$FTPS_PW_REPO $FTPS_HOST_REPO; mirror --verbose --include-glob='*.deb' --include-glob='*.txt' --include-glob='*.tar.gz' --reverse --no-recursion --delete bin/  ./archive/$GITHUB_REF/; bye"

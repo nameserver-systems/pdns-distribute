@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "pdns-distribute-docs"
 version = "0.1.0"
-description = ""
+description = "This file contaions requirements for the pdns-distribute documentation"
 authors = ["linxside <noreply@linxsi.de"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-mkdocs = "*"
-mkdocs-material = "*"
+mkdocs = "1.2.2"
+mkdocs-material = "7.1.11"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"

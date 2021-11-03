@@ -28,6 +28,7 @@ jobs:
           version: latest
 
       - name: Lint Code Base
+        continue-on-error: true
         uses: github/super-linter/slim@v4
         env:
           VALIDATE_ALL_CODEBASE: true

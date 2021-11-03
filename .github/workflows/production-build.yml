@@ -1,4 +1,4 @@
-name: goreleaser
+name: production-build
 
 on:
   push:
@@ -6,24 +6,23 @@ on:
       - '*'
 
 jobs:
-  goreleaser:
+  goreleaser-production:
     runs-on: ubuntu-latest
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      -
-        name: Set up Go
+
+      - name: Set up Go
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
-      -
-        name: Generate goreleaser config
+
+      - name: Generate goreleaser config
         run: make generate-goreleaser-config
-      -
-        name: Run GoReleaser
+
+      - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v2
         with:
           distribution: goreleaser
@@ -32,7 +31,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: goreleaser-artifacts
+          path: bin/
+
   deploy-binaries:
+    needs:
+      - goreleaser-production
     container: registry.gitlab.com/nameserver-systems/images/ci/python
     runs-on: ubuntu-latest
     env:
@@ -40,6 +47,12 @@ jobs:
       FTPS_PW_REPO: ${{ secrets.FTPS_PW_REPO }}
       FTPS_HOST_REPO: ${{ secrets.FTPS_HOST_REPO }}
     steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: goreleaser-artifacts
+          path: bin/
+
       - name: Deploy artifacts to latest path
         run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_REPO,$FTPS_PW_REPO $FTPS_HOST_REPO; mirror --verbose --include-glob='*.deb' --include-glob='*.txt' --reverse --no-recursion --delete bin/  ./latest/; bye"
 

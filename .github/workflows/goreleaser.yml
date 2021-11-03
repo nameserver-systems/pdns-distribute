@@ -32,7 +32,10 @@ jobs:
   deploy-binaries:
     container: registry.gitlab.com/nameserver-systems/images/ci/python
     runs-on: ubuntu-latest
-
+    env:
+      FTPS_USER_REPO: ${{ secrets.FTPS_USER_REPO }}
+      FTPS_PW_REPO: ${{ secrets.FTPS_PW_REPO }}
+      FTPS_HOST_REPO: ${{ secrets.FTPS_HOST_REPO }}
     steps:
       - name: Deploy artifacts to latest path
         run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate true; open -u $FTPS_USER_REPO,$FTPS_PW_REPO $FTPS_HOST_REPO; mirror --verbose --include-glob='*.deb' --include-glob='*.txt' --reverse --no-recursion --delete bin/  ./latest/; bye"

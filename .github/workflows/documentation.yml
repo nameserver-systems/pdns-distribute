@@ -23,4 +23,8 @@ jobs:
         run: poetry run mkdocs build --clean --strict
 
       - name: Upload docs
+        env:
+          FTPS_USER_DOC: ${{ secrets.FTPS_USER_DOC }}
+          FTPS_PW_DOC: ${{ secrets.FTPS_PW_DOC }}
+          FTPS_HOST_DOC: ${{ secrets.FTPS_HOST_DOC }}
         run: lftp -c "set ftp:ssl-force true; set ssl:verify-certificate false; open -u $FTPS_USER_DOC,$FTPS_PW_DOC $FTPS_HOST_DOC; mirror --verbose --reverse --delete site/  ./; bye"

@@ -99,14 +99,15 @@ stop-all-containers:
 	podman stop -a
 
 release: generate-goreleaser-config
+	goreleaser check
 	goreleaser release --rm-dist
 
 snapshot-release: generate-goreleaser-config
+	goreleaser check
 	goreleaser release --snapshot --rm-dist --skip-publish
 
 generate-goreleaser-config:
 	go run cmd/release-config-generator/main.go -ignore release-config-generator,example-microservice
-	goreleaser check
 
 go-update-dependencies:
 	go get -u ./...

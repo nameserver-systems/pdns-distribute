@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          lfs: true
 
       - name: Install requirements
         run: poetry install --no-dev

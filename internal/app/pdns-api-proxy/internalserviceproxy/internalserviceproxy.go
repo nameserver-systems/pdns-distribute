@@ -1,7 +1,6 @@
 package internalserviceproxy
 
 import (
-	"crypto/tls"
 	"net/http"
 	"time"
 
@@ -59,11 +58,8 @@ func startHTTPServer(serviceconfig *config.ServiceConfiguration) error {
 	}
 
 	server := &http.Server{
-		Addr:    serviceaddress,
-		Handler: router,
-		TLSConfig: &tls.Config{
-			InsecureSkipVerify: true, //nolint:gosec
-		},
+		Addr:         serviceaddress,
+		Handler:      router,
 		ReadTimeout:  serverreadtimeout,
 		WriteTimeout: serverwritetimeout,
 	}

@@ -9,7 +9,7 @@ require (
 	github.com/miekg/dns v1.1.45
 	github.com/mvmaasakkers/certificates v0.6.0
 	github.com/nats-io/nats.go v1.13.0
-	github.com/prometheus/client_golang v1.12.0
+	github.com/prometheus/client_golang v1.12.1
 	github.com/rs/zerolog v1.26.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
 	github.com/spf13/cobra v1.3.0

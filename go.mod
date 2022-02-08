@@ -11,7 +11,7 @@ require (
 	github.com/nats-io/nats.go v1.13.0
 	github.com/prometheus/client_golang v1.12.1
 	github.com/rs/zerolog v1.26.1
-	github.com/shirou/gopsutil v3.21.11+incompatible
+	github.com/shirou/gopsutil v3.22.1+incompatible
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.0

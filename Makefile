@@ -1,4 +1,4 @@
-COMPILEFLAGS = -mod readonly -trimpath -ldflags "-s -w -extldflags '-static'"
+COMPILEFLAGS = -mod readonly -trimpath -tags netgo,osusergo -ldflags "-s -w -extldflags '-static'"
 UPXFLAGS = -7 -t
 
 PATHS = $(shell find . -name "*.go" -not -path "./vendor/*" | xargs -I {} dirname {}  | uniq)
@@ -13,7 +13,7 @@ CONTAINERFILES="./build/ci/powerdns" "./build/package/pdns-primary"
 all: lint build
 
 build:
-	@for f in $(MODULEPATHS); do GOOS=linux GOARCH=amd64 go build -o ./bin/$$(basename $${f})-$(LATESTGITTAG)-linux-amd64 $(COMPILEFLAGS) $${f}; done
+	@for f in $(MODULEPATHS); do GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o ./bin/$$(basename $${f})-$(LATESTGITTAG)-linux-amd64 $(COMPILEFLAGS) $${f}; done
 
 strip-binaries:
 	@for f in $(find ./bin/ -name "*-v*") ; do strip -s $${f} ; done
@@ -46,7 +46,7 @@ goimport:
 	@goimports -w ./
 
 govet:
-	@for f in $(PATHS); do go vet $${f}; done	
+	@for f in $(PATHS); do go vet $${f}; done
 
 golangci-all:
 	golangci-lint run --fix ./...

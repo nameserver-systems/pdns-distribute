@@ -16,6 +16,11 @@ builds: {{range $id, $path := .Binaries}}
     flags:
       - -trimpath
       - -mod=readonly
+    ldflags:
+      - -s -w -extldflags '-static' -X main.version={{"{{.Version}}"}} -X main.commit={{"{{.Commit}}"}} -X main.date={{"{{.Date}}"}}
+    tags:
+      - osusergo
+      - netgo
     goos:
       - linux
     goarch:

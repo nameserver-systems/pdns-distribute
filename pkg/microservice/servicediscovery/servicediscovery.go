@@ -8,7 +8,7 @@ import (
 	consul "github.com/hashicorp/consul/api"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
-	"github.com/shirou/gopsutil/load"
+	"github.com/shirou/gopsutil/v3/load"
 )
 
 // ServiceDiscovery struct which holds connection.

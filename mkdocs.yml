@@ -1,7 +1,7 @@
 site_name: pdns-distribute Docs
 site_url: https://docs.nameserver.systems
 site_author: linxside
-copyright: made 2019 - 2021 with ❤ by linxside
+copyright: made 2019 - 2022 with ❤ by linxside
 repo_url: https://github.com/nameserver-systems/pdns-distribute
 repo_name: GitHub
 edit_uri: "docs/"

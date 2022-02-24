@@ -24,7 +24,7 @@ jobs:
           lfs: true
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2
+        uses: golangci/golangci-lint-action@v3
         with:
           version: latest
 

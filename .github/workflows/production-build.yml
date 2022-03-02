@@ -49,7 +49,7 @@ jobs:
       FTPS_HOST_REPO: ${{ secrets.FTPS_HOST_REPO }}
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: goreleaser-artifacts
           path: bin/

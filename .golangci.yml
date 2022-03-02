@@ -22,7 +22,7 @@ linters:
     - prealloc
     - nlreturn
     - goprintffuncname
-    - golint
+    - revive
     - goimports
     - goerr113
     - godox
@@ -30,6 +30,8 @@ linters:
     - goconst
     - gci
     - dupl
+    - exportloopref
+    - govet
   disable-all: false
   presets:
     - bugs

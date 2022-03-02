@@ -5,8 +5,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/eventcheck"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallcheck"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallensurensec3"
-
-	// nolint:lll
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks/intervallsigningsync"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"

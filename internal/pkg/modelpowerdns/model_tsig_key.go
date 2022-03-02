@@ -19,5 +19,5 @@ type TsigKey struct {
 	// The Base64 encoded secret key, empty when listing keys. MAY be empty when POSTing to have the server generate the key material
 	Key string `json:"key,omitempty"`
 	// Set to \"TSIGKey\"
-	Type_ string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 }

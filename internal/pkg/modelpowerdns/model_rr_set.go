@@ -13,7 +13,7 @@ type RrSet struct {
 	// Name for record set (e.g. “www.powerdns.com.”)
 	Name string `json:"name"`
 	// Type of this record (e.g. “A”, “PTR”, “MX”)
-	Type_ string `json:"type"`
+	Type string `json:"type"`
 	// DNS TTL of the records, in seconds. MUST NOT be included when changetype is set to “DELETE”.
 	TTL int32 `json:"ttl"`
 	// MUST be added when updating the RRSet. Must be REPLACE or DELETE. With DELETE, all existing RRs matching name and type will be deleted, including all comments. With REPLACE: when records is present, all existing RRs matching name and type will be deleted, and then new records given in records will be created. If no records are left, any existing comments will be deleted as well. When comments is present, all existing comments for the RRs matching name and type will be deleted, and then new comments given in comments will be created.

@@ -15,7 +15,7 @@ type Zone struct { //nolint:maligned
 	// Name of the zone (e.g. “example.com.”) MUST have a trailing dot
 	Name string `json:"name,omitempty"`
 	// Set to “Zone”
-	Type_ string `json:"type,omitempty"`
+	Type string `json:"type,omitempty"`
 	// API endpoint for this zone
 	URL string `json:"url,omitempty"`
 	// Zone kind, one of “Native”, “Master”, “Slave”

@@ -44,94 +44,13 @@ requests to the powerdns api.
 ## Sequence diagrams
 
 ??? note "Event Sync"
-    ```mermaid
-        sequenceDiagram
-        participant a as [external-client]
-        participant b as internal-proxy
-        participant c as [PowerDNS API]
-        participant e as external-proxy
-        participant d as [Message Broker]
-        participant f as secondary-syncer
-        a->>+b: Zone-Add
-        b-xd: {ZONE.ADD}
-        d-xf: {ZONE.ADD}
-        f->>+d: Get-Zone-Data
-        d->>+e: Get-Zone-Data
-        e->>+c: Get-Zone-Data
-        c-->>-e: Zone-Data
-        e-->>-d: Zone-Data
-        d-->>-f: Zone-Data
-        b->>+c: Zone-Add
-        c-->>-b: Zone-Add-Successful
-        b-->>-a: Zone-Add-Successful
-        Note over b,c: pdns-primary
-        Note over d,e: pdns-primary
-        Note over f: pdns-secondary
-    ```
+    ![event-sync](../img/event_sync.png)
 
 ??? note "Health Check and trigger Sync"
-    ```mermaid
-        sequenceDiagram
-            participant a as health-checker
-            participant b as [Primary PowerDNS API]
-            participant c as [Message Broker]
-            participant d as [Service Discovery]
-            participant e as [Secondary PowerDNS]
-            loop Every Quarter of an hour
-            a->>+b: Get-Zones-Serial
-            b-->>-a: All-Zones-Serial
-            a->>+d: Get-Active-Secondaries
-            d-->>-a: Active-Secondaries
-            loop All Secondaries
-            loop All Zones
-            a->>+e: Get-Zone-Serial
-            e-->>-a: Zone-Serial
-            end
-            end
-            a-xc: {Zone.Change}
-            end
-            Note over a,b: pdns-primary
-            Note over c,d: pdns-primary
-            Note over e: pdns-secondary
-    ```
+    ![health_check](../img/health_check.png)
 
 ??? note "Event based health check"
-    ```mermaid
-        sequenceDiagram
-            participant a as health-checker
-            participant b as [Primary PowerDNS API]
-            participant c as [Message Broker]
-            participant d as [Service Discovery]
-            participant e as [Secondary PowerDNS]
-            c-xa: {Zone.Add} or {Zone.Change}
-            a->>+b: Get-Zone-Serial
-            b-->>-a: Zone-Serial
-            a->>+d: Get-Active-Secondaries
-            d-->>-a: Active-Secondaries
-            loop All Secondaries
-            a->>+e: Get-Zone-Serial
-            e-->>-a: Zone-Serial
-            end
-            a-xc: {Zone.Change}
-            Note over a,b: pdns-primary
-            Note over c,d: pdns-primary
-            Note over e: pdns-secondary
-    ```
+    ![event_health_check](../img/event_health_check.png)
 
 ??? note "RRSIG Signing Check and Sync"
-    ```mermaid
-        sequenceDiagram
-            participant a as signing-checker
-            participant b as [Primary PowerDNS API]
-            participant c as [Message Broker]
-            loop Every half day
-            a->>+b: Get-DNSSEC-Zones-Signature-Validity
-            b-->>-a: DNSSEC-Zones-Signature-Validity
-            loop All phasing out zones
-            a->>+b: Renew Signatures
-            a-xc: {Zone.Change}
-            end
-            end
-            Note over a,b: pdns-primary
-            Note over c: pdns-primary
-    ```
+    ![rrsig_signing_sync](../img/rrsig_signing_sync.png)

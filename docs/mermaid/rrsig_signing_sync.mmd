@@ -1,0 +1,14 @@
+sequenceDiagram
+participant a as signing-checker
+participant b as [Primary PowerDNS API]
+participant c as [Message Broker]
+loop Every half day
+a->>+b: Get-DNSSEC-Zones-Signature-Validity
+b-->>-a: DNSSEC-Zones-Signature-Validity
+loop All phasing out zones
+a->>+b: Renew Signatures
+a-xc: {Zone.Change}
+end
+end
+Note over a,b: pdns-primary
+Note over c: pdns-primary

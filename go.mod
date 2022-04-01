@@ -11,7 +11,7 @@ require (
 	github.com/nats-io/nats.go v1.13.0
 	github.com/prometheus/client_golang v1.12.1
 	github.com/rs/zerolog v1.26.1
-	github.com/shirou/gopsutil/v3 v3.22.2
+	github.com/shirou/gopsutil/v3 v3.22.3
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.10.1
 	github.com/stretchr/testify v1.7.1
@@ -58,7 +58,7 @@ require (
 	golang.org/x/crypto v0.0.0-20211215165025-cf75a172585e // indirect
 	golang.org/x/mod v0.5.0 // indirect
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
-	golang.org/x/sys v0.0.0-20220114195835-da31bd327af9 // indirect
+	golang.org/x/sys v0.0.0-20220128215802-99c3d69c2c27 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect

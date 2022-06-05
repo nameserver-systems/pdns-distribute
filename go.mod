@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/google/uuid v1.3.0
 	github.com/gorilla/mux v1.8.0
-	github.com/hashicorp/consul/api v1.12.0
+	github.com/hashicorp/consul/api v1.13.0
 	github.com/miekg/dns v1.1.49
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.16.0

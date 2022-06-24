@@ -14,7 +14,7 @@ require (
 	github.com/shirou/gopsutil/v3 v3.22.5
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.11.0
-	github.com/stretchr/testify v1.7.4
+	github.com/stretchr/testify v1.7.5
 )
 
 require (

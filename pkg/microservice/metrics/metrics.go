@@ -2,6 +2,7 @@ package metrics
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -14,8 +15,9 @@ func StartMetricsExporter(address string) error {
 	router.Handle("/metrics", promhttp.Handler())
 
 	server := &http.Server{
-		Addr:    address,
-		Handler: router,
+		Addr:              address,
+		Handler:           router,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	err := server.ListenAndServe()

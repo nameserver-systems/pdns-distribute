@@ -58,10 +58,11 @@ func startHTTPServer(serviceconfig *config.ServiceConfiguration) error {
 	}
 
 	server := &http.Server{
-		Addr:         serviceaddress,
-		Handler:      router,
-		ReadTimeout:  serverreadtimeout,
-		WriteTimeout: serverwritetimeout,
+		Addr:              serviceaddress,
+		Handler:           router,
+		ReadTimeout:       serverreadtimeout,
+		WriteTimeout:      serverwritetimeout,
+		ReadHeaderTimeout: 5 * time.Second,
 	}
 
 	err := server.ListenAndServeTLS(certpath, keypath)

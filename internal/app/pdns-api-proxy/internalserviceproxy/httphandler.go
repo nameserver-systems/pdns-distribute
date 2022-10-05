@@ -2,7 +2,6 @@ package internalserviceproxy
 
 import (
 	"bytes"
-	"context"
 	"io"
 	"net/http"
 
@@ -100,7 +99,7 @@ func defaultProxy(respond http.ResponseWriter, incomingrequest *http.Request) {
 		proxyurl += "?" + incomingrequest.URL.RawQuery
 	}
 
-	proxyrequest, preparerequesterr := http.NewRequestWithContext(context.Background(), incomingrequest.Method, proxyurl, incomingbodyreader)
+	proxyrequest, preparerequesterr := http.NewRequestWithContext(incomingrequest.Context(), incomingrequest.Method, proxyurl, incomingbodyreader)
 	if preparerequesterr != nil {
 		logger.ErrorErrLog(preparerequesterr)
 	}

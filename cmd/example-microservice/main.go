@@ -79,7 +79,13 @@ func startHealthServiceEndpoint(xd msframe.Microservice) {
 		log.Fatal(err2)
 	}
 
-	err := http.ListenAndServe(sdurl.Host, nil)
+	server := http.Server{
+		Addr:              sdurl.Host,
+		ReadHeaderTimeout: 42,
+		Handler:           nil,
+	}
+
+	err := server.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}

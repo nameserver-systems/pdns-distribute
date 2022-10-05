@@ -1,6 +1,8 @@
 package metrics
 
 import (
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/collectors"
 	"net/http"
 	"time"
 
@@ -10,9 +12,16 @@ import (
 
 // StartMetricsExporter is blocking.
 func StartMetricsExporter(address string) error {
+	prometheus.Unregister(collectors.NewGoCollector())
+	prometheus.MustRegister(collectors.NewGoCollector(collectors.WithGoCollectorRuntimeMetrics(collectors.MetricsAll)))
+	prometheus.MustRegister(collectors.NewBuildInfoCollector())
+
 	router := mux.NewRouter()
 	router.StrictSlash(true)
-	router.Handle("/metrics", promhttp.Handler())
+	router.Handle("/metrics", promhttp.HandlerFor(
+		prometheus.DefaultGatherer, promhttp.HandlerOpts{
+			EnableOpenMetrics: true,
+		}))
 
 	server := &http.Server{
 		Addr:              address,

@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/consul/api v1.18.0
 	github.com/miekg/dns v1.1.50
 	github.com/mvmaasakkers/certificates v0.7.2
-	github.com/nats-io/nats.go v1.21.0
+	github.com/nats-io/nats.go v1.22.1
 	github.com/prometheus/client_golang v1.14.0
 	github.com/rs/zerolog v1.28.0
 	github.com/shirou/gopsutil/v3 v3.22.10

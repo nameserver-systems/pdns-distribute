@@ -8,6 +8,7 @@ on:
 jobs:
   documentation:
     runs-on: ubuntu-latest
+    if: github.repository == 'nameserver-systems/pdns-distribute'
 
     steps:
       - name: Checkout Code

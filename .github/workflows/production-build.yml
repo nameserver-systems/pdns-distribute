@@ -41,7 +41,6 @@ jobs:
   deploy-binaries:
     needs:
       - goreleaser-production
-    container: registry.gitlab.com/nameserver-systems/images/ci/python
     runs-on: ubuntu-latest
     env:
       FTPS_USER_REPO: ${{ secrets.FTPS_USER_REPO }}
@@ -53,6 +52,11 @@ jobs:
         with:
           name: goreleaser-artifacts
           path: bin/
+
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get --yes install lftp
 
       - name: Extract semantic version
         run: echo "SEMANTIC_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV

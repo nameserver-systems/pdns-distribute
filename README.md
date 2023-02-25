@@ -52,4 +52,4 @@ Microservices:
 * upx
 * shellcheck
 
-made 2019 - 2022 with ❤ by linxside
+made 2019 - 2023 with ❤ by linxside

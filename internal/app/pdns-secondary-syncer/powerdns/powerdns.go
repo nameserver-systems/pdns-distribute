@@ -347,7 +347,7 @@ func getZoneIDFromDeleteEventMessage(msg *nats.Msg) (string, error) {
 	return deleteevent.Zone, nil
 }
 
-func ChangeZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.ServiceConfiguration) {
+func ChangeZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.ServiceConfiguration) { //nolint:funlen
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,
@@ -390,12 +390,12 @@ func ChangeZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.Servi
 	} else {
 		powerdnsapideletecalltotal.Inc()
 	}
-
 	*/
 
 	zoneExist, err := powerdnsutils.DoesZoneExist(pdnsconnection, zoneid)
 	if err != nil {
 		logger.ErrorErrLog(err)
+
 		return
 	}
 

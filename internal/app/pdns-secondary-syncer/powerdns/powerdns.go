@@ -391,13 +391,24 @@ func ChangeZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.Servi
 		powerdnsapideletecalltotal.Inc()
 	}
 
-	createerr := createZone(zoneid, zonedata, conf)
-	if createerr != nil {
-		logger.ErrorErrLog(createerr)
+	*/
+
+	zoneExist, err := powerdnsutils.DoesZoneExist(pdnsconnection, zoneid)
+	if err != nil {
+		logger.ErrorErrLog(err)
 		return
 	}
 
-	*/
+	if !zoneExist {
+		zonedata := modelevent.ZoneDataReplyEvent{}
+
+		createerr := createZone(zoneid, zonedata, conf)
+		if createerr != nil {
+			logger.ErrorErrLog(createerr)
+
+			return
+		}
+	}
 
 	if err := powerdnsutils.AXFRRetrieve(pdnsconnection, zoneid); err != nil {
 		logger.ErrorErrLog(err)

@@ -2,6 +2,7 @@ package powerdnsutils
 
 import (
 	"bytes"
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -49,6 +50,30 @@ func GetZoneList(con modelpowerdns.PDNSconnectionobject, zoneid string, dnssecin
 	}
 
 	return response, nil
+}
+
+func DoesZoneExist(con modelpowerdns.PDNSconnectionobject, zoneID string) (bool, error) {
+	serverID := con.ServerID
+	apiToken := con.Apitoken
+	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverID + "/zones?zone=" + zoneID
+
+	response, requesterr := httputils.ExecutePowerDNSRequest(http.MethodGet, zoneDataFileURL, apiToken, nil)
+	if requesterr != nil {
+		return false, requesterr
+	}
+
+	var zoneList []modelpowerdns.Zone
+
+	parseerr := json.Unmarshal([]byte(response), &zoneList)
+	if parseerr != nil {
+		return false, parseerr
+	}
+
+	if len(zoneList) != 1 {
+		return false, nil
+	}
+
+	return true, nil
 }
 
 func DeleteZone(con modelpowerdns.PDNSconnectionobject, zoneid string) error {

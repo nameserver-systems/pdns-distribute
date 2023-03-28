@@ -21,7 +21,7 @@ func WaitToShutdownServer(ms *msframe.Microservice, closeFunc func()) {
 	if receivedsignal == syscall.SIGINT {
 		logger.InfoLog("Microservice: " + ms.Name + " stopped fatal.")
 		os.Exit(exitcode)
-	} else {
-		logger.InfoLog("Microservice: " + ms.Name + " stopped successfully.")
 	}
+
+	logger.InfoLog("Microservice: " + ms.Name + " stopped successfully.")
 }

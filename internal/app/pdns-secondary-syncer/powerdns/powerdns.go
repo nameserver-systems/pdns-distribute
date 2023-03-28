@@ -45,7 +45,7 @@ var (
 	workerlockcount = promauto.NewGauge(prometheus.GaugeOpts{Name: "secondarysyncer_worker_lock_count", Help: "The actual count of worker locks"})
 )
 
-func AddZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.ServiceConfiguration) {
+func AddZone(msg *nats.Msg, conf *config.ServiceConfiguration) {
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,
@@ -89,7 +89,7 @@ func AddZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.ServiceC
 
 	zonedata := modelevent.ZoneDataReplyEvent{}
 
-	createerr := createZone(zoneid, zonedata, conf)
+	createerr := createZone(zoneid, conf)
 	if createerr != nil {
 		logger.ErrorErrLog(createerr)
 
@@ -133,13 +133,13 @@ func stopSynchronMutex(zonemutex interface{}, zoneid string) {
 	logger.DebugLog("[Synchronize Worker Lock] unlocked zone: " + zoneid)
 }
 
-func createZone(zoneid string, zonedata modelevent.ZoneDataReplyEvent, conf *config.ServiceConfiguration) error { //nolint:wsl
-	/*err := createZonePerZoneFile(zoneid, zonedata)
+func createZone(zoneid string, conf *config.ServiceConfiguration) error { //nolint:wsl
+	/*err := createZonePerZoneFile(zoned, zonedata)
 	if err != nil {
 		return err
 	}*/
 
-	err2 := CreateZonePerAPI(zoneid, zonedata, conf)
+	err2 := CreateZonePerAPI(zoneid, conf)
 	if err2 != nil {
 		return err2
 	}
@@ -171,14 +171,14 @@ func createZone(zoneid string, zonedata modelevent.ZoneDataReplyEvent, conf *con
 	return nil
 }
 
-func CreateZonePerAPI(zoneid string, zonedata modelevent.ZoneDataReplyEvent, conf *config.ServiceConfiguration) error {
+func CreateZonePerAPI(zoneid string, conf *config.ServiceConfiguration) error {
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,
 		Apitoken:    conf.PowerDNSAPIToken,
 	}
 
-	payload, preparationerr := prepareCreateZoneRequest(zoneid, zonedata)
+	payload, preparationerr := prepareCreateZoneRequest(zoneid)
 	if preparationerr != nil {
 		return preparationerr
 	}
@@ -233,7 +233,7 @@ func createZonePerZoneFile(zoneid string, zonedata modelevent.ZoneDataReplyEvent
 	return nil
 }
 
-func prepareCreateZoneRequest(zoneid string, zonedata modelevent.ZoneDataReplyEvent) ([]byte, error) { //nolint:unparam
+func prepareCreateZoneRequest(zoneid string) ([]byte, error) { //nolint:unparam
 	zonecreation := modelpowerdns.Zone{
 		ID:          zoneid,
 		Name:        zoneid,
@@ -347,7 +347,7 @@ func getZoneIDFromDeleteEventMessage(msg *nats.Msg) (string, error) {
 	return deleteevent.Zone, nil
 }
 
-func ChangeZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.ServiceConfiguration) { //nolint:funlen
+func ChangeZone(msg *nats.Msg, conf *config.ServiceConfiguration) { //nolint:funlen
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,
@@ -400,9 +400,7 @@ func ChangeZone(msg *nats.Msg, ms *microservice.Microservice, conf *config.Servi
 	}
 
 	if !zoneExist {
-		zonedata := modelevent.ZoneDataReplyEvent{}
-
-		createerr := createZone(zoneid, zonedata, conf)
+		createerr := createZone(zoneid, conf)
 		if createerr != nil {
 			logger.ErrorErrLog(createerr)
 

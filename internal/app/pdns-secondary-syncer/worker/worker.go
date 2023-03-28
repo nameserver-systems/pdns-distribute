@@ -39,10 +39,10 @@ func worker(jobchan <-chan *modeljob.PowerDNSAPIJob) {
 	for job := range jobchan {
 		switch job.Jobtype {
 		case modeljob.AddZone:
-			powerdns.AddZone(job.Msg, job.Ms, job.Conf)
+			powerdns.AddZone(job.Msg, job.Conf)
 
 		case modeljob.ChangeZone:
-			powerdns.ChangeZone(job.Msg, job.Ms, job.Conf)
+			powerdns.ChangeZone(job.Msg, job.Conf)
 
 		case modeljob.DeleteZone:
 			powerdns.DeleteZone(job.Msg, job.Conf)

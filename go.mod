@@ -10,7 +10,7 @@ require (
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.25.0
 	github.com/prometheus/client_golang v1.14.0
-	github.com/rs/zerolog v1.29.0
+	github.com/rs/zerolog v1.29.1
 	github.com/shirou/gopsutil/v3 v3.23.3
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0

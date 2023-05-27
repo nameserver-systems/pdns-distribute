@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/consul/api v1.20.0
 	github.com/miekg/dns v1.1.54
 	github.com/mvmaasakkers/certificates v0.7.2
-	github.com/nats-io/nats.go v1.25.0
+	github.com/nats-io/nats.go v1.26.0
 	github.com/prometheus/client_golang v1.15.1
 	github.com/rs/zerolog v1.29.1
 	github.com/shirou/gopsutil/v3 v3.23.4
@@ -34,6 +34,7 @@ require (
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/klauspost/compress v1.16.5 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.12 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

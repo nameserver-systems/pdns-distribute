@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine@sha256:445f34008a77b0b98bf1821bf7ef5e37bb63cc42d22ee7c21cc17041070d134f
+FROM golang:1.21-alpine@sha256:4bc6541af94a67d9dcabba9826c36e4e9497dacf4e8755ac503000b6ff75318f
 
 # UPDATES
 RUN apk update && apk upgrade

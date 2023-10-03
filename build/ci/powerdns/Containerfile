@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 ENV DEB_VERSION buster
 ENV PDNS_MINOR_VERSION 42

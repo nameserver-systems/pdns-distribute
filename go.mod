@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/google/uuid v1.3.1
 	github.com/gorilla/mux v1.8.0
-	github.com/hashicorp/consul/api v1.24.0
+	github.com/hashicorp/consul/api v1.25.1
 	github.com/miekg/dns v1.1.56
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.29.0

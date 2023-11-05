@@ -113,30 +113,7 @@ func getZoneDataFromPowerDNS(zoneid string, conf *config.ServiceConfiguration, w
 	powerdnsdnstcpcalltotal.Inc()
 	powerdnsaxfrquery.Inc()
 
-	/* Use always AXFR for quering zones instead of api. Because LUA Records are not recognized by libs and pdns can interpret format
-	if strings.Contains(zonefile, "CLASS1") {
-		//CLASS1 is used by miek/dns due to not recognize LUA records
-		zonefile, err = getZoneDataFromPowerDNSAPI(zoneid, conf)
-		if err != nil {
-			powerdnsapierrtotal.Inc()
-			return
-		}
-
-		powerdnsapicalltotal.Inc()
-	}
-	*/
-
 	return zonefile, nil
-}
-
-func getZoneDataFromPowerDNSAPI(zoneid string, conf *config.ServiceConfiguration) (string, error) { //nolint:unused,deadcode
-	// does not work for dnssec signed zones
-	// used for zones contain LUA records
-	serverid := conf.PowerDNSServerID
-	apitoken := conf.PowerDNSAPIToken
-	zoneDataFileURL := conf.PowerDNSURL + "/api/v1/servers/" + serverid + "/zones/" + zoneid + "/export"
-
-	return httputils.ExecutePowerDNSRequest(http.MethodGet, zoneDataFileURL, apitoken, nil)
 }
 
 func getZoneMetadataFromPowerDNS(zonename string, conf *config.ServiceConfiguration) (dnssec, presigned bool, err error) {
@@ -161,7 +138,7 @@ func getZoneMetadataFromPowerDNS(zonename string, conf *config.ServiceConfigurat
 func getZoneDetailsPerPowerdnsAPI(conf *config.ServiceConfiguration, zonename string) (modelpowerdns.Zone, error) {
 	serverid := conf.PowerDNSServerID
 	apitoken := conf.PowerDNSAPIToken
-	zoneDataFileURL := conf.PowerDNSURL + "/api/v1/servers/" + serverid + "/zones/" + zonename
+	zoneDataFileURL := conf.PowerDNSURL + powerdnsutils.PowerDNSServerBaseURL + serverid + powerdnsutils.PowerDNSZoneURLPath + zonename
 
 	detailresponse, httperr := httputils.ExecutePowerDNSRequest(http.MethodGet, zoneDataFileURL, apitoken, nil)
 	if httperr != nil {

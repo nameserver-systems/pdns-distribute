@@ -37,7 +37,7 @@ func TransferPowerDNSDNSSECZonesIntoZoneStateMap(actualzones []modelpowerdns.Zon
 func GetZoneList(con modelpowerdns.PDNSconnectionobject, zoneid string, dnssecinfo bool) (string, error) {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones?rrsets=false&dnssec=" +
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + "/zones?rrsets=false&dnssec=" +
 		strconv.FormatBool(dnssecinfo)
 
 	if zoneid != "" {
@@ -55,7 +55,7 @@ func GetZoneList(con modelpowerdns.PDNSconnectionobject, zoneid string, dnssecin
 func DoesZoneExist(con modelpowerdns.PDNSconnectionobject, zoneID string) (bool, error) {
 	serverID := con.ServerID
 	apiToken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverID + "/zones?zone=" + zoneID
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverID + "/zones?zone=" + zoneID
 
 	response, requesterr := httputils.ExecutePowerDNSRequest(http.MethodGet, zoneDataFileURL, apiToken, nil)
 	if requesterr != nil {
@@ -79,7 +79,7 @@ func DoesZoneExist(con modelpowerdns.PDNSconnectionobject, zoneID string) (bool,
 func DeleteZone(con modelpowerdns.PDNSconnectionobject, zoneid string) error {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones/" + zoneid
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + PowerDNSZoneURLPath + zoneid
 
 	_, delerr := httputils.ExecutePowerDNSRequest(http.MethodDelete, zoneDataFileURL, apitoken, nil)
 	if delerr != nil {
@@ -92,7 +92,7 @@ func DeleteZone(con modelpowerdns.PDNSconnectionobject, zoneid string) error {
 func CreateZone(con modelpowerdns.PDNSconnectionobject, storepayload []byte) error {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones?rrsets=false"
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + "/zones?rrsets=false"
 
 	// T8D8
 	_, storeerr := httputils.ExecutePowerDNSRequest(http.MethodPost, zoneDataFileURL, apitoken,
@@ -107,7 +107,7 @@ func CreateZone(con modelpowerdns.PDNSconnectionobject, storepayload []byte) err
 func ClearCache(zoneid string, con modelpowerdns.PDNSconnectionobject) {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/cache/flush?domain=" + zoneid
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + "/cache/flush?domain=" + zoneid
 
 	_, clearerr := httputils.ExecutePowerDNSRequest(http.MethodPut, zoneDataFileURL, apitoken, nil)
 	if clearerr != nil {
@@ -118,7 +118,7 @@ func ClearCache(zoneid string, con modelpowerdns.PDNSconnectionobject) {
 func GetZoneMetaData(con modelpowerdns.PDNSconnectionobject, zoneid, metadatakind string) (string, error) {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones/" + zoneid + "/metadata/" + metadatakind
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + PowerDNSZoneURLPath + zoneid + "/metadata/" + metadatakind
 
 	resp, storeerr := httputils.ExecutePowerDNSRequest(http.MethodGet, zoneDataFileURL, apitoken, nil)
 	if storeerr != nil {
@@ -131,7 +131,7 @@ func GetZoneMetaData(con modelpowerdns.PDNSconnectionobject, zoneid, metadatakin
 func RectifyZone(con modelpowerdns.PDNSconnectionobject, zoneid string) error {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones/" + zoneid + "/rectify"
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + PowerDNSZoneURLPath + zoneid + "/rectify"
 
 	_, storeerr := httputils.ExecutePowerDNSRequest(http.MethodPut, zoneDataFileURL, apitoken, nil)
 	if storeerr != nil {
@@ -144,7 +144,7 @@ func RectifyZone(con modelpowerdns.PDNSconnectionobject, zoneid string) error {
 func AXFRRetrieve(con modelpowerdns.PDNSconnectionobject, zoneid string) error {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones/" + zoneid + "/axfr-retrieve"
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + PowerDNSZoneURLPath + zoneid + "/axfr-retrieve"
 
 	_, storeerr := httputils.ExecutePowerDNSRequest(http.MethodPut, zoneDataFileURL, apitoken, nil)
 	if storeerr != nil {
@@ -157,7 +157,7 @@ func AXFRRetrieve(con modelpowerdns.PDNSconnectionobject, zoneid string) error {
 func SetZoneMetaData(con modelpowerdns.PDNSconnectionobject, zoneid string, storepayload []byte) error {
 	serverid := con.ServerID
 	apitoken := con.Apitoken
-	zoneDataFileURL := con.PowerDNSurl + "/api/v1/servers/" + serverid + "/zones/" + zoneid + "/metadata"
+	zoneDataFileURL := con.PowerDNSurl + PowerDNSServerBaseURL + serverid + PowerDNSZoneURLPath + zoneid + "/metadata"
 
 	_, storeerr := httputils.ExecutePowerDNSRequest(http.MethodPost, zoneDataFileURL, apitoken,
 		bytes.NewBuffer(storepayload))

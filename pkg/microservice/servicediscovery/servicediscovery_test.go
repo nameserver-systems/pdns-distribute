@@ -6,6 +6,7 @@ import (
 
 	consul "github.com/hashicorp/consul/api"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestServiceDiscovery_newClient(t *testing.T) {
@@ -21,7 +22,7 @@ func TestServiceDiscovery_newClient(t *testing.T) {
 
 		err := sd.newClient()
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 
 	t.Run("fail_client_exists", func(t *testing.T) {
@@ -36,7 +37,7 @@ func TestServiceDiscovery_newClient(t *testing.T) {
 
 		err := sd.newClient()
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 	})
 }
 

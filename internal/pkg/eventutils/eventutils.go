@@ -21,7 +21,7 @@ func PublishDeleteZoneEvent(ms *microservice.Microservice, topic string, zoneid 
 	}
 
 	ms.MessageBroker.Publish(topic, payload)
-	logger.DebugLog("[Delete Zone Event] triggered for zone: " + zoneid + " on topic: " + topic)
+	logger.DebugLog("[Delete Zone Event] triggered for zone: " + zoneid + " on topic: " + topic) //nolint:goconst
 }
 
 func PublishChangeZoneEvent(ms *microservice.Microservice, topic string, zoneid string) {

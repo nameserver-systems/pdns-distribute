@@ -14,21 +14,21 @@ func Test_convertStringToInt(t *testing.T) {
 		t.Run("normal", func(t *testing.T) {
 			num, err := ConvertStringToInt("5")
 
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.Equal(t, 5, num)
 		})
 
 		t.Run("negative", func(t *testing.T) {
 			num, err := ConvertStringToInt("-5")
 
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.Equal(t, -5, num)
 		})
 
 		t.Run("zero", func(t *testing.T) {
 			num, err := ConvertStringToInt("0")
 
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.Zero(t, num)
 		})
 	})
@@ -37,14 +37,14 @@ func Test_convertStringToInt(t *testing.T) {
 		t.Run("no_number", func(t *testing.T) {
 			num, err := ConvertStringToInt("abcd5")
 
-			assert.Error(t, err)
+			require.Error(t, err)
 			assert.Empty(t, num)
 		})
 
 		t.Run("empty", func(t *testing.T) {
 			num, err := ConvertStringToInt("")
 
-			assert.Error(t, err)
+			require.Error(t, err)
 			assert.Empty(t, num)
 		})
 	})
@@ -113,7 +113,7 @@ func Test_GenerateUUID(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
 		id, err := GenerateUUID()
 
-		assert.NoError(t, err)
+		require.NoError(t, err)
 		assert.NotNil(t, id)
 		assert.Len(t, id, 36)
 	})
@@ -139,14 +139,14 @@ func Test_EnsurePathExist(t *testing.T) {
 
 			err := EnsurePathExist(newTmpDir)
 
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.DirExists(t, newTmpDir)
 		})
 
 		t.Run("dir_exists", func(t *testing.T) {
 			err := EnsurePathExist(tmpDir)
 
-			assert.NoError(t, err)
+			require.NoError(t, err)
 			assert.DirExists(t, tmpDir)
 		})
 	})
@@ -155,7 +155,7 @@ func Test_EnsurePathExist(t *testing.T) {
 		t.Run("no_path_given", func(t *testing.T) {
 			err := EnsurePathExist("")
 
-			assert.EqualError(t, err, "mkdir : no such file or directory")
+			require.EqualError(t, err, "mkdir : no such file or directory")
 		})
 	})
 }

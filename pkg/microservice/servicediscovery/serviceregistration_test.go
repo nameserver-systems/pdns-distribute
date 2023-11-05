@@ -27,14 +27,14 @@ func TestServiceRegistration_generateServiceDiscoveryRegistration(t *testing.T) 
 		require.NoError(t, err)
 		require.NotNil(t, actual)
 
-		assert.Equal(t, actual, api.AgentServiceRegistration{
+		assert.Equal(t, api.AgentServiceRegistration{
 			ID:      "a1b2-c3d4-e5f6",
 			Name:    "testservice",
 			Tags:    []string{"test", "test2"},
 			Port:    4321,
 			Address: "test.local",
 			Meta:    map[string]string{"test": "TEST"},
-		})
+		}, actual)
 	})
 
 	t.Run("fail", func(t *testing.T) {
@@ -55,7 +55,7 @@ func TestServiceRegistration_generateServiceDiscoveryRegistration(t *testing.T) 
 			require.Error(t, err)
 			require.NotNil(t, actual)
 
-			assert.Equal(t, actual, api.AgentServiceRegistration{})
+			assert.Equal(t, api.AgentServiceRegistration{}, actual)
 		})
 		t.Run("port_parsing", func(t *testing.T) {
 			sr := ServiceRegistration{
@@ -74,7 +74,7 @@ func TestServiceRegistration_generateServiceDiscoveryRegistration(t *testing.T) 
 			require.Error(t, err)
 			require.NotNil(t, actual)
 
-			assert.Equal(t, actual, api.AgentServiceRegistration{})
+			assert.Equal(t, api.AgentServiceRegistration{}, actual)
 		})
 	})
 }

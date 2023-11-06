@@ -32,11 +32,3 @@ jobs:
         uses: golangci/golangci-lint-action@v3
         with:
           version: latest
-
-      - name: Lint Code Base
-        continue-on-error: true
-        uses: github/super-linter/slim@v5
-        env:
-          VALIDATE_ALL_CODEBASE: true
-          DEFAULT_BRANCH: main
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

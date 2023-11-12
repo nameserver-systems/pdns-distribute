@@ -9,14 +9,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-var signalchannel chan os.Signal //nolint:gochecknoglobals
+var signalChannel chan<- os.Signal //nolint:gochecknoglobals
 
 // InitGlobalLogger set global logging settings.
-func InitGlobalLogger(sigchannel chan os.Signal) {
+func InitGlobalLogger(sigchannel chan<- os.Signal) {
 	zerolog.TimeFieldFormat = time.RFC3339Nano
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
 
-	signalchannel = sigchannel
+	signalChannel = sigchannel
 }
 
 // SetDefaultLogLevel with panic, fatal, error, warn, info, debug
@@ -82,13 +82,13 @@ func ErrorLog(message string) {
 }
 
 func FatalLog(message string) {
-	signalchannel <- syscall.SIGINT
+	signalChannel <- syscall.SIGINT
 
 	log.Log().Str("level", "fatal").Msg(message)
 }
 
 func PanicLog(message string) {
-	signalchannel <- syscall.SIGINT
+	signalChannel <- syscall.SIGINT
 
 	log.Panic().Msg(message)
 }
@@ -110,13 +110,13 @@ func ErrorErrLog(err error) {
 }
 
 func FatalErrLog(err error) {
-	signalchannel <- syscall.SIGINT
+	signalChannel <- syscall.SIGINT
 
 	log.Log().Str("level", "fatal").Err(err).Msg("")
 }
 
 func PanicErrLog(err error) {
-	signalchannel <- syscall.SIGINT
+	signalChannel <- syscall.SIGINT
 
 	log.Panic().Err(err).Msg("")
 }

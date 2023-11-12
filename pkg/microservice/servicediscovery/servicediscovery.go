@@ -272,7 +272,7 @@ func (sd *ServiceDiscovery) PutValue(key string, value []byte) error {
 	return err
 }
 
-func (sd *ServiceDiscovery) SubscribeToKey(key string, valuechan chan []byte) {
+func (sd *ServiceDiscovery) SubscribeToKey(key string, valuechan chan<- []byte) {
 	actualIndex := uint64(0)
 
 	go func() {

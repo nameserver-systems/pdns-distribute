@@ -18,7 +18,7 @@ func GetZoneFilePerAXFR(address, zoneid string, readtimeout time.Duration) (stri
 func doZoneTransfer(zoneid string, address string, readtimeout time.Duration) (zonefile string, err error) {
 	var conn net.Conn
 
-	var channel chan *dns.Envelope
+	var channel <-chan *dns.Envelope
 
 	var d net.Dialer
 
@@ -42,7 +42,7 @@ func doZoneTransfer(zoneid string, address string, readtimeout time.Duration) (z
 	return
 }
 
-func receiveAllRecords(channel chan *dns.Envelope) ([]dns.RR, error) {
+func receiveAllRecords(channel <-chan *dns.Envelope) ([]dns.RR, error) {
 	var answerrr []dns.RR
 
 	for envmsg := range channel {

@@ -6,7 +6,7 @@ require (
 	github.com/google/uuid v1.4.0
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/consul/api v1.26.1
-	github.com/miekg/dns v1.1.56
+	github.com/miekg/dns v1.1.57
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.31.0
 	github.com/prometheus/client_golang v1.17.0

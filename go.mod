@@ -3,7 +3,7 @@ module github.com/nameserver-systems/pdns-distribute
 go 1.21
 
 require (
-	github.com/google/uuid v1.4.0
+	github.com/google/uuid v1.5.0
 	github.com/gorilla/mux v1.8.1
 	github.com/hashicorp/consul/api v1.26.1
 	github.com/miekg/dns v1.1.57

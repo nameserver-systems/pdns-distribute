@@ -1,0 +1,32 @@
+[Service]
+URL = "http://localhost:30001"
+Tags = ["external", "primary-node", "proxy"]
+    [ServiceMetaData]
+
+# very verbose output, journal may rotate often
+[Log]
+DEBUG = true
+
+[Prometheus]
+Address = "0.0.0.0:9500" # turn off by set empty string
+
+[ServiceDiscovery]
+URL = "http://consul:8500"
+HealthPingIntervall = "5s"
+Username = "" # optional
+Password = "" # optional
+
+[MessageBroker]
+URL = "nats://nats:4222"
+Username = "" # optional
+Password = "" # optional
+
+[PowerDNS]
+URL = "http://pdns-primary:8081"
+APIToken = "0000"
+ServerID = "localhost"
+AXFRTimeout = "2s"
+AXFRAddress = "127.0.0.1:53"
+
+[ZoneDataTopics]
+Wildcard = "zonedata.*"

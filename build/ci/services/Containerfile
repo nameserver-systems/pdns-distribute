@@ -1,0 +1,29 @@
+FROM docker.io/library/golang:1.21.5-alpine as builder
+
+WORKDIR /app
+COPY ./go.mod ./go.sum ./
+COPY ./cmd ./cmd
+COPY ./internal ./internal
+COPY ./pkg ./pkg
+
+RUN go mod download
+
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=readonly -ldflags "-s -w -extldflags '-static'" -tags osusergo,netgo -o /pdns-api-proxy ./cmd/pdns-api-proxy/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=readonly -ldflags "-s -w -extldflags '-static'" -tags osusergo,netgo -o /pdns-health-checker ./cmd/pdns-health-checker/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=readonly -ldflags "-s -w -extldflags '-static'" -tags osusergo,netgo -o /pdns-secondary-syncer ./cmd/pdns-secondary-syncer/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=readonly -ldflags "-s -w -extldflags '-static'" -tags osusergo,netgo -o /pdns-zone-provider ./cmd/pdns-zone-provider/main.go
+
+
+FROM docker.io/library/alpine:3.19.0
+
+COPY ./build/ci/services/config/pdns-api-proxy/config.toml /etc/pdns-api-proxy/config.toml
+COPY ./build/ci/services/config/pdns-health-checker/config.toml /etc/pdns-health-checker/config.toml
+COPY ./build/ci/services/config/pdns-secondary-syncer/config.toml /etc/pdns-secondary-syncer/config.toml
+COPY ./build/ci/services/config/pdns-zone-provider/config.toml /etc/pdns-zone-provider/config.toml
+
+RUN mkdir /home/pdns-api-proxy && chmod 0777 /home/pdns-api-proxy
+
+COPY --from=builder /pdns-api-proxy /pdns-api-proxy
+COPY --from=builder /pdns-health-checker /pdns-health-checker
+COPY --from=builder /pdns-secondary-syncer /pdns-secondary-syncer
+COPY --from=builder /pdns-zone-provider /pdns-zone-provider

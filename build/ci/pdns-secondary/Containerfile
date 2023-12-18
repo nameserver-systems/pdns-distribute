@@ -1,0 +1,15 @@
+FROM docker.io/library/alpine:3.19.0
+
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
+
+# hadolint ignore=DL3018
+RUN apk --no-cache add pdns pdns-backend-sqlite3 sqlite pdns-doc
+RUN sqlite3 /etc/pdns/zones.db < /usr/share/doc/pdns/schema.sqlite3.sql
+
+CMD ["pdns_server"]
+
+COPY ./pdns.conf /etc/pdns/pdns.conf
+
+EXPOSE 53/tcp
+EXPOSE 53/udp
+EXPOSE 8082/tcp

@@ -47,6 +47,7 @@ Microservices:
 
 * go (>= 1.17)
 * podman
+* podman-compose
 * golangci-lint
 * goreleaser
 * upx

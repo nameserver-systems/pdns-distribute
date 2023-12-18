@@ -1,0 +1,32 @@
+[Service]
+URL = "http://0.0.0.0:30000"
+Cert = "/home/pdns-api-proxy/cert.pem"
+Key = "/home/pdns-api-proxy/key.pem"
+Tags = ["internal", "primary-node", "proxy"]
+    [ServiceMetaData]
+
+# very verbose output, journal may rotate often
+[Log]
+DEBUG = true
+
+[Prometheus]
+Address = "0.0.0.0:9502" # turn off by set empty string
+
+[ServiceDiscovery]
+URL = "http://consul:8500"
+HealthPingIntervall = "5s"
+Username = "" # optional
+Password = "" # optional
+
+[MessageBroker]
+URL = "nats://nats:4222"
+Username = "" # optional
+Password = "" # optional
+
+[PowerDNS]
+URL = "http://pdns-primary:8081"
+
+[ZoneEventTopics]
+Add = "zone.add"
+Mod = "zone.modified"
+Del = "zone.delete"

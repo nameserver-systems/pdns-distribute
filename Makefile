@@ -8,8 +8,6 @@ MAINDIR = $(shell pwd)
 LATESTCOMMIT = $(shell git rev-list --tags --max-count=1)
 LATESTGITTAG = $(shell git describe --tags $(LATESTCOMMIT))
 
-CONTAINERFILES="./build/ci/powerdns" "./build/package/pdns-primary"
-
 all: lint build
 
 build:
@@ -68,35 +66,6 @@ mod-prepare:
 
 download-dep:
 	go mod download $(MAINMODULE)
-
-build-images:
-	@for f in $(CONTAINERFILES); do	podman build -t $$(basename $${f}) $${f}; done
-
-cleanup:
-	podman image prune -f -a
-	podman container prune -f
-
-start-dev-dependencies:
-	@for f in consul nats pdns-primary pdns-secondary ; do podman start $$(basename $${f}) ; podman port $$(basename $${f}) ; done
-
-start-create-dev-dependencies: build-images
-	podman run -d -p 8300:8300 -p 8500:8500 -p 8600:8600 --name consul consul
-	podman port consul
-	podman run -d -p 4222:4222 -p 6222:6222 -p 8222:8222 --name nats nats -m 8222
-	podman port nats
-	podman run -d -p 8081:8081 -p 5353:53 --name pdns-primary pdns-primary
-	podman port pdns-primary
-	podman run -d -p 18081:8081 -p 53535:53 --name pdns-secondary pdns-primary
-	podman port pdns-secondary
-
-stop-dev-containers:
-	podman stop consul
-	podman stop nats
-	podman stop pdns-primary
-	podman stop pdns-secondary
-
-stop-all-containers:
-	podman stop -a
 
 release: generate-goreleaser-config
 	goreleaser check

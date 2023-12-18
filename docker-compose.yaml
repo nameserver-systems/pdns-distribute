@@ -1,0 +1,97 @@
+version: "3.8"
+services:
+  pdns-api-proxy:
+    command: ["/pdns-api-proxy"]
+    build:
+      context: ./
+      dockerfile: ./build/ci/services/Containerfile
+    depends_on:
+      - pdns-primary
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "9502:9502"
+      - "30000:30000"
+  pdns-health-checker:
+    command: ["/pdns-health-checker"]
+    build:
+      context: ./
+      dockerfile: ./build/ci/services/Containerfile
+    depends_on:
+      - pdns-primary
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "9501:9501"
+  pdns-secondary-syncer:
+    command: ["/pdns-secondary-syncer"]
+    build:
+      context: ./
+      dockerfile: ./build/ci/services/Containerfile
+    depends_on:
+      - pdns-secondary
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "9503:9503"
+  pdns-zone-provider:
+    command: ["/pdns-zone-provider"]
+    build:
+      context: ./
+      dockerfile: ./build/ci/services/Containerfile
+    depends_on:
+      - pdns-secondary
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "9500:9500"
+  pdns-primary:
+    build:
+      context: ./build/ci/pdns-primary
+      dockerfile: Containerfile
+    depends_on:
+      - consul
+      - nats
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "5301:5301"
+      - "8081:8081"
+  pdns-secondary:
+    build:
+      context: ./build/ci/pdns-secondary
+      dockerfile: Containerfile
+    depends_on:
+      - consul
+      - nats
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "5300:53"
+      - "8082:8082"
+  consul:
+    image: docker.io/hashicorp/consul:1.17.1
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "8500:8500"
+      - "8501:8501"
+  nats:
+    image: docker.io/library/nats:2.10.7
+    command: ["--config", "nats-server.conf", "--jetstream", "--server_name", "nats-js-test", "--routes", "nats://ruser:T0pS3cr3t@nats2:6223"]
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+  nats2:
+    image: docker.io/library/nats:2.10.7
+    command: ["--config", "nats-server.conf", "--jetstream", "--server_name", "nats-js-test2", "--routes", "nats://ruser:T0pS3cr3t@nats:6222", "--port", "4223", "--http_port", "8223", "--cluster", "nats://nats2:6223"]
+    networks:
+      - pdns-distribute-net
+    ports:
+      - "4223:4223"
+      - "8223:8223"
+networks:
+  pdns-distribute-net:
+    enable_ipv6: false

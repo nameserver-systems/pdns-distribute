@@ -1,45 +1,48 @@
 # Test
 ## Local Test and Development Environment
-The local test environment consist of an OCI container for dependent services. The microservices will run directly 
-on the development machine and **not** in a container. This enables a faster development with less overhead. The
-makefile contains targets for creating, running and deleting containers. The TOML configurations in `configs/`
-are adopted to run in this environment. The environment may also work on other operating systems than linux.
+The local test environment consist of one container per pdns-distribute microservice in one dev image and different infrastructure containers. We depend on
+`podman-compose` for building and managing the dev environment. The environment may also work on other operating systems than linux, but there is no guarantee.
 
 *Container Overview:*
 
 ??? note "consul"
-    The service discovery tool consul exposes the ports 8300, 8500, 8600. Consul runs as a standalone node.
+    The service discovery tool consul exposes the ports 8500 and 8501 to the host. Consul runs in standalone mode.
 ??? note "nats"
-    The messsage broker service nats exposes the ports 4222, 6222, 8222. Nats runs as a standalone node.
+    The message broker service nats exposes the ports 4222 and 8222 to the host. Nats runs in cluster mode. Every service connects to this nats instance.
+??? note "nats2"
+    The message broker service nats exposes the ports 4223 and 8223 to the host. This instance is part of the two node cluster which is necessary to activate Jetstream and has no other function.
 ??? note "pdns-primary"
-    This self-build container contains a powerdns server with a sqlite3 database as backend. It is the source
-    of zonedata for the synchronisation process. This container exposes port 8081 for the api and port 5353 as the
-    default port for the nameserver (like port 53).
+    This container contains a powerdns server with a sqlite3 database as backend. It is the source
+    of zonedata for the synchronization process. This container exposes port 8081 for the api and port 5301 for DNS (like port 53).
 ??? note "pdns-secondary"
-    This self-build container is identical to the pdns-primary. It is the destinaton for the synchronisation
-    process. This container exposes port 18081 for the api and port 53535 as the default port for
-    the nameserver (like port 53).
+    This container is identical to the pdns-primary except the configured ports. It is the destination for the synchronization
+    process. This container exposes port 8082 for the api and port 5300 for DNS (like port 53).
+??? note "pdns-zone-provider"
+    This container contains every pdns-distribute microservice, but runs only the one from title. The configuration for every microservice is included in this image. It exposes only the metrics endpoint under the port 9500.
+??? note "pdns-secondary-syncer"
+    This container contains every pdns-distribute microservice, but runs only the one from title. The configuration for every microservice is included in this image. It exposes only the metrics endpoint under the port 9503.
+??? note "pdns-health-checker"
+    This container contains every pdns-distribute microservice, but runs only the one from title. The configuration for every microservice is included in this image. It exposes only the metrics endpoint under the port 9501.
+??? note "pdns-api-proxy"
+    This container contains every pdns-distribute microservice, but runs only the one from title. The configuration for every microservice is included in this image. It exposes the metrics endpoint under the port 9502 and the proxy listener reachable using port 30000.
 
-
-### Build + Create + Start Container
-It is intended to run it once and then prefer [Start Container](#start-container).
+### Build Containers
+It is intended to build  when something has changed.
 
 ```bash
-make start-create-dev-dependencies
+podman-compose build
 ```
 
-### Start Container
-If the container exist, start them without recreating them.
-
+### Start Containers
 ```bash
-make start-dev-dependencies
+podman-compose up -d --force-recreate -t 1
 ```
 
 ### Stop Container
 ```bash
-make stop-dev-containers
+podman-compose stop -t 1
 ```
-### Running Binaries in test environment
+### Running Binaries directly
 ```bash
 cd cmd/<microservice>/
 go run main.go

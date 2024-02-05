@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/mux v1.8.1
-	github.com/hashicorp/consul/api v1.26.1
+	github.com/hashicorp/consul/api v1.27.0
 	github.com/miekg/dns v1.1.58
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.32.0

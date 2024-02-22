@@ -7,7 +7,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/miekg/dns v1.1.58
 	github.com/mvmaasakkers/certificates v0.7.2
-	github.com/nats-io/nats.go v1.31.0
+	github.com/nats-io/nats.go v1.33.1
 	github.com/prometheus/client_golang v1.18.0
 	github.com/rs/zerolog v1.31.0
 	github.com/spf13/viper v1.18.2
@@ -28,7 +28,7 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/matttproud/golang_protobuf_extensions/v2 v2.0.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/nats-io/nkeys v0.4.6 // indirect
+	github.com/nats-io/nkeys v0.4.7 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect

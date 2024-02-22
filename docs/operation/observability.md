@@ -14,7 +14,7 @@ We recommend Grafana and Prometheus for displaying and monitoring.
 
 ### Grafana Dashboard Examples
 ![primary-dashboard](../img/pdns-distribute-primary-dashboard.png)
-![secondary-dashboar](../img/pdns-distribute-secondary-dashboard.png)
+![secondary-dashboard](../img/pdns-distribute-secondary-dashboard.png)
 
 
 ### Prometheus Endpoints

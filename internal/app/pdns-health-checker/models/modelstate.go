@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -21,7 +21,7 @@ type State struct {
 	zonesChangedAt time.Time
 
 	secondaryMutex       sync.Mutex
-	activeSecondaries    []servicediscovery.ResolvedService
+	activeSecondaries    []messaging.ResolvedService
 	secondariesChangedAt time.Time
 }
 
@@ -66,7 +66,7 @@ func (s *State) GetExpectedZoneChangeTime() time.Time {
 	return s.zonesChangedAt
 }
 
-func (s *State) SetActiveSecondaries(secondaries []servicediscovery.ResolvedService) {
+func (s *State) SetActiveSecondaries(secondaries []messaging.ResolvedService) {
 	s.secondaryMutex.Lock()
 	secondarystatelockcount.Inc()
 
@@ -79,7 +79,7 @@ func (s *State) SetActiveSecondaries(secondaries []servicediscovery.ResolvedServ
 	s.secondariesChangedAt = time.Now()
 }
 
-func (s *State) GetActiveSecondaries() []servicediscovery.ResolvedService {
+func (s *State) GetActiveSecondaries() []messaging.ResolvedService {
 	s.secondaryMutex.Lock()
 	secondarystatelockcount.Inc()
 

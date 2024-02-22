@@ -12,12 +12,6 @@ DEBUG = true
 [Prometheus]
 Address = "0.0.0.0:9502" # turn off by set empty string
 
-[ServiceDiscovery]
-URL = "http://consul:8500"
-HealthPingIntervall = "5s"
-Username = "" # optional
-Password = "" # optional
-
 [MessageBroker]
 URL = "nats://nats:4222"
 Username = "" # optional

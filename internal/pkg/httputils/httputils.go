@@ -138,7 +138,7 @@ func ExecutePowerDNSRequest(method, url, apitoken string, body io.Reader) (strin
 
 	request.Header.Add("X-API-Key", apitoken)
 
-	response, executeerr := client.Do(request) //nolint:bodyclose
+	response, executeerr := client.Do(request)
 	if executeerr != nil {
 		return "", executeerr
 	}

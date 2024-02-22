@@ -3,7 +3,7 @@ package modeljob
 import (
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
-	"github.com/nats-io/nats.go"
+	"github.com/nats-io/nats.go/jetstream"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 
 type PowerDNSAPIJob struct {
 	Jobtype int
-	Msg     *nats.Msg
+	Msg     jetstream.Msg
 	Ms      *microservice.Microservice
 	Conf    *config.ServiceConfiguration
 }

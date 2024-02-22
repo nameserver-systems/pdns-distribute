@@ -8,15 +8,16 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
 )
 
-func AppendIDToTopic(topic string, secondary servicediscovery.ResolvedService) string {
+func AppendIDToTopic(topic string, secondary messaging.ResolvedService) string {
 	return topic + "." + secondary.ID
 }
 
-func GetSecondaryZoneStateMap(secondary servicediscovery.ResolvedService,
-	hs *models.HealthService) (modelzone.Zonestatemap, error) {
+func GetSecondaryZoneStateMap(secondary messaging.ResolvedService,
+	hs *models.HealthService,
+) (modelzone.Zonestatemap, error) {
 	const messagetimeout = 10 * time.Second
 
 	var transferobject modelzone.Zonestatemaptransferobject
@@ -50,8 +51,9 @@ func GetSecondaryZoneStateMap(secondary servicediscovery.ResolvedService,
 	return transferobject.Statemap, nil
 }
 
-func GetZoneSerialFromSecondary(secondary servicediscovery.ResolvedService, hs *models.HealthService,
-	zoneid string) (int32, error) {
+func GetZoneSerialFromSecondary(secondary messaging.ResolvedService, hs *models.HealthService,
+	zoneid string,
+) (int32, error) {
 	const expectedzonecount = 1
 
 	const messagetimeout = 10 * time.Second

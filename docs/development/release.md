@@ -18,17 +18,17 @@ make snapshot-release
 ```git
 git describe --tags --abbrev=0
 ```
-2. Increment the version, create the tag and push to main repository. Commit tags use the format
+1. Increment the version, create the tag and push to main repository. Commit tags use the format
 [Semantic Versioning](https://semver.org/). The tag description can be the semantic version.
 ```git
 git tag -a v0.0.0 -m "v0.0.0"
 git push
 ```
 
-3. Build release.
+1. Build release.
 
 !!! caution
-    The build and deployment of the production release / binaries is part of the github pipeline.
+    The build and deployment of the production release / binaries is part of the GitHub pipeline.
 
 ```bash
 make release

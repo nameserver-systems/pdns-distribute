@@ -20,7 +20,14 @@ var (
 func StartProxy(microservice *msframe.Microservice) error {
 	initConfig(microservice)
 
-	err := startHTTPServer(serviceconfig)
+	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{serviceconfig.AddEventTopic, serviceconfig.ChangeEventTopic, serviceconfig.DeleteEventTopic})
+	if err != nil {
+		return err
+	}
+
+	ms.MessageBroker.SetStream(stream)
+
+	err = startHTTPServer(serviceconfig)
 	if err != nil {
 		return err
 	}

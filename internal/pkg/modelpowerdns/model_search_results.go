@@ -8,5 +8,4 @@
 
 package modelpowerdns
 
-type SearchResults struct {
-}
+type SearchResults struct{}

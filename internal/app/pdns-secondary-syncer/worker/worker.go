@@ -26,7 +26,7 @@ func EnqueJob(j *modeljob.PowerDNSAPIJob) {
 	Workerqueue <- j
 	logger.DebugLog("[Enqueue Job] Job successfully enqueued. Jobs in workerqueue: " + strconv.Itoa(len(Workerqueue)))
 	logger.DebugLog("[Enqueue Job] Go Routine Count: " + strconv.Itoa(runtime.NumGoroutine()))
-	logger.DebugLog("[Enqueue Job] New Job: " + string(j.Msg.Data))
+	logger.DebugLog("[Enqueue Job] New Job: " + string(j.Msg.Data()))
 }
 
 func CloseWorkerQueue() {

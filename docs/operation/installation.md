@@ -1,20 +1,19 @@
 # Installation
 
 ## Requirements
-* Actual linux based os with systemd support (eg. Debian Buster)
+* Actual linux based os with systemd support (e.g. Debian Bookworm)
 
-NATS and Consul instances can be run on primaries or secondaries. The only limit is, that only one instance of each
+NATS instances can be run on primaries or secondaries. The only limit is, that only one instance of each
 should be run on a system.
 
-* Consul cluster (service discovery)
-* NATS cluster (message broker)
+* NATS cluster with jetstream (message broker)
 
 ### Primary
-* PowerDNS >= 4.3 (with database backend)
+* PowerDNS >= 4.8 (with database backend)
 
 ### Secondaries
-* PowerDNS >= 4.3 (with database backend)
-* dnsdist >= 1.5 (recommended)
+* PowerDNS >= 4.8 (with database backend)
+* dnsdist >= 1.9 (recommended)
 
 ## Install latest version
 ### Primary

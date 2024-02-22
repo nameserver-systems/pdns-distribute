@@ -51,7 +51,7 @@ type Zone struct { //nolint:maligned
 	// MAY be sent in client bodies during creation, and MUST NOT be sent by the server. Simple list of strings of nameserver names, including the trailing dot. Not required for slave zones.
 	Nameservers []string `json:"nameservers"`
 	// The id of the TSIG keys used for master operation in this zone
-	MasterTsigKeyIds []string `json:"master_tsig_key_ids,omitempty"`
+	MasterTSIGKeyIDs []string `json:"master_tsig_key_ids,omitempty"`
 	// The id of the TSIG keys used for slave operation in this zone
-	SlaveTsigKeyIds []string `json:"slave_tsig_key_ids,omitempty"`
+	SlaveTSIGKeyIDs []string `json:"slave_tsig_key_ids,omitempty"`
 }

@@ -18,7 +18,8 @@ type HealthService struct {
 }
 
 func InitHealthServiceObject(ms *microservice.Microservice, conf *config.ServiceConfiguration,
-	state *State) *HealthService {
+	state *State,
+) *HealthService {
 	hs := &HealthService{
 		State: state,
 		Ms:    ms,

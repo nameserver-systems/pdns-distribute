@@ -2,13 +2,14 @@ package microservice
 
 import (
 	"fmt"
+	"net"
+	"net/url"
 	"os"
 
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/configuration"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/metrics"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
 )
 
@@ -21,10 +22,7 @@ type Microservice struct {
 
 	ServiceURL string
 
-	SDRegistration   *servicediscovery.ServiceRegistration
-	ServiceDiscovery *servicediscovery.ServiceDiscovery
-
-	MessageBroker messaging.MessageBroker
+	MessageBroker *messaging.MessageBroker
 
 	Config *configuration.Configurationobject
 
@@ -34,7 +32,6 @@ type Microservice struct {
 func (ms *Microservice) StartService() (err error) {
 	servicename := ms.getCleanedServiceName()
 	err = ms.generateServiceID()
-
 	if err != nil {
 		return err
 	}
@@ -54,10 +51,7 @@ func (ms *Microservice) StartService() (err error) {
 
 	ms.loadMicroserviceSettings()
 
-	ms.MessageBroker.StartMessageBrokerConnection(serviceidentifier)
-
-	ms.prepareServiceRegistration()
-	ms.ServiceDiscovery, err = servicediscovery.StartServiceDiscoveryAndRegisterService(ms.SDRegistration)
+	ms.initializeMessageBroker(serviceidentifier)
 
 	if err != nil {
 		return err
@@ -91,8 +85,6 @@ func generateServiceIdentifier(servicename string, ms *Microservice) string {
 func (ms *Microservice) initiateReferencedObjects() {
 	const signalchannelsize = 2
 
-	ms.SDRegistration = &servicediscovery.ServiceRegistration{}
-	ms.ServiceDiscovery = &servicediscovery.ServiceDiscovery{}
 	ms.Config = &configuration.Configurationobject{}
 	ms.SignalChannel = make(chan os.Signal, signalchannelsize)
 }
@@ -103,25 +95,19 @@ func (ms *Microservice) loadMicroserviceSettings() {
 	ms.Tags = append(ms.Tags, ms.Version)
 	ms.Meta = ms.Config.GetStringMapSettings("ServiceMetaData")
 
-	ms.SDRegistration.ServiceDiscoveryURL = ms.Config.GetStringSetting("ServiceDiscovery.URL")
-	ms.SDRegistration.ServiceDiscoveryHealthPingIntervall =
-		ms.Config.GetTimeDuration("ServiceDiscovery.HealthPingIntervall")
-
-	ms.MessageBroker.URL = ms.Config.GetStringSetting("MessageBroker.URL")
-
-	ms.loadBasicAuthCredentialsSettings()
-
 	ms.checkAndSetDebugLogLevel()
 
 	ms.checkAndStartMetricsEndpoint()
 }
 
-func (ms *Microservice) loadBasicAuthCredentialsSettings() {
-	ms.SDRegistration.ServiceDiscoveryUsername = ms.Config.GetStringSetting("ServiceDiscovery.Username")
-	ms.SDRegistration.ServiceDiscoveryPassword = ms.Config.GetStringSetting("ServiceDiscovery.Password")
+func (ms *Microservice) initializeMessageBroker(serviceIdentifier string) (err error) {
+	brokerURL := ms.Config.GetStringSetting("MessageBroker.URL")
+	brokerUser := ms.Config.GetStringSetting("MessageBroker.Username")
+	brokerPassword := ms.Config.GetStringSetting("MessageBroker.Password")
 
-	ms.MessageBroker.Username = ms.Config.GetStringSetting("MessageBroker.Username")
-	ms.MessageBroker.Password = ms.Config.GetStringSetting("MessageBroker.Password")
+	ms.MessageBroker, err = messaging.NewMessageBroker(brokerURL, brokerUser, brokerPassword, serviceIdentifier)
+
+	return
 }
 
 func (ms *Microservice) checkAndSetDebugLogLevel() {
@@ -139,36 +125,34 @@ func (ms *Microservice) checkAndStartMetricsEndpoint() {
 		if prometheusaddress != "" {
 			err := metrics.StartMetricsExporter(prometheusaddress)
 			if err != nil {
-				logger.ErrorErrLog(err)
+				logger.FatalErrLog(err)
 			}
 		}
 	}()
 }
 
-func (ms *Microservice) prepareServiceRegistration() {
-	ms.SDRegistration.MicroserviceID = ms.ID
-	ms.SDRegistration.MicroserviceName = ms.Name
-	ms.SDRegistration.MicroserviceTags = ms.Tags
-	ms.SDRegistration.MicroserviceMetadata = ms.Meta
-	ms.SDRegistration.MicroserviceURL = ms.ServiceURL
-}
+func (ms *Microservice) generateServiceID() (err error) {
+	ms.ID, err = utils.GenerateUUID()
 
-func (ms *Microservice) generateServiceID() error {
-	uuid, err := utils.GenerateUUID()
-
-	ms.ID = uuid
-
-	return err
+	return
 }
 
 func (ms *Microservice) CloseMicroservice() error {
-	ms.MessageBroker.CloseConnection()
-
-	err := ms.ServiceDiscovery.DeregisterService()
-
-	return err
+	return ms.MessageBroker.CloseConnection()
 }
 
 func (ms *Microservice) getCleanedServiceName() string {
 	return utils.TrimAndLowerString(ms.Name)
+}
+
+func (ms *Microservice) GetServicePort() (port string, err error) {
+	var parsedURL *url.URL
+
+	if parsedURL, err = url.Parse(ms.ServiceURL); err != nil {
+		return
+	}
+
+	_, port, err = net.SplitHostPort(parsedURL.Host)
+
+	return
 }

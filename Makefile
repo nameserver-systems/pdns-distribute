@@ -47,7 +47,7 @@ govet:
 	@for f in $(PATHS); do go vet $${f}; done
 
 golangci-all:
-	golangci-lint run --fix ./...
+	@podman run --rm -t -v ~/.cache/golangci-lint/:/root/.cache -v $(shell pwd):/app -w /app docker.io/golangci/golangci-lint golangci-lint run --fix
 
 check-shell-scripts: generate-goreleaser-config
 	@shellcheck ./scripts/package/primary/*.sh

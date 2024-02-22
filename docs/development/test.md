@@ -5,12 +5,10 @@ The local test environment consist of one container per pdns-distribute microser
 
 *Container Overview:*
 
-??? note "consul"
-    The service discovery tool consul exposes the ports 8500 and 8501 to the host. Consul runs in standalone mode.
 ??? note "nats"
     The message broker service nats exposes the ports 4222 and 8222 to the host. Nats runs in cluster mode. Every service connects to this nats instance.
 ??? note "nats2"
-    The message broker service nats exposes the ports 4223 and 8223 to the host. This instance is part of the two node cluster which is necessary to activate Jetstream and has no other function.
+    The message broker service nats exposes the ports 4223 and 8223 to the host. This instance is part of the two node cluster which is necessary to activate jetstream and has no other function.
 ??? note "pdns-primary"
     This container contains a powerdns server with a sqlite3 database as backend. It is the source
     of zonedata for the synchronization process. This container exposes port 8081 for the api and port 5301 for DNS (like port 53).

@@ -8,5 +8,4 @@
 
 package modelpowerdns
 
-type Zones struct {
-}
+type Zones struct{}

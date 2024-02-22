@@ -1,6 +1,6 @@
 # pdns-api-proxy
 The api proxy sits in front of the powerdns primary api. It will generate zone events from api interaction with the
-primary api and publish them by using the distributed message broker nats. The microservice will automatically create self signed certificates for the exposed api listener,
+primary api and publish them by using the distributed message broker nats. The microservice will automatically create self-signed certificates for the exposed api listener,
 if no certificate will be [configured](../operation/configuration.md).
 
 ## Workflows

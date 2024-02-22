@@ -11,7 +11,8 @@ import (
 )
 
 func StartAllHealthChecks(msobject *microservice.Microservice, configobject *config.ServiceConfiguration,
-	actualstate *models.State) {
+	actualstate *models.State,
+) {
 	go eventcheck.StartEventCheckHandler(msobject, configobject, actualstate)
 	go intervallcheck.StartPeriodicalCheck(msobject, configobject, actualstate)
 	go intervallsigningsync.StartPeridoicalSigningSync(msobject, configobject, actualstate)

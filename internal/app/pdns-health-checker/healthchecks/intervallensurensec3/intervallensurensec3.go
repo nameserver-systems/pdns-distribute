@@ -24,7 +24,8 @@ var (
 )
 
 func StartIntervallEnsureNsec3(ms *microservice.Microservice, conf *config.ServiceConfiguration,
-	actualstate *models.State) {
+	actualstate *models.State,
+) {
 	refreshintervall := conf.NSEC3CheckIntervall
 
 	hs := models.InitHealthServiceObject(ms, conf, actualstate)

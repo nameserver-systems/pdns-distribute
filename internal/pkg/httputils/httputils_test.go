@@ -2,7 +2,6 @@
 package httputils
 
 import (
-	"net/http"
 	"testing"
 )
 
@@ -105,25 +104,6 @@ func TestGetAddressFromURL(t *testing.T) {
 			if got != tt.want {
 				t.Errorf("GetHostAndPortFromURL() got = %v, want %v", got, tt.want)
 			}
-		})
-	}
-}
-
-func TestCloseResponseBody(t *testing.T) {
-	type args struct {
-		response *http.Response
-	}
-
-	tests := []struct {
-		name string
-		args args
-	}{
-		{name: "ok", args: args{response: &http.Response{}}},
-		{name: "nil response", args: args{response: nil}},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
 		})
 	}
 }

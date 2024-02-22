@@ -9,8 +9,8 @@ import (
 )
 
 func EnsureCertificatePaths(fqdn string, serviceconfig *config.ServiceConfiguration) (certpath, keypath string,
-	err error) {
-
+	err error,
+) {
 	certpath = serviceconfig.CertPath
 	keypath = serviceconfig.KeyPath
 

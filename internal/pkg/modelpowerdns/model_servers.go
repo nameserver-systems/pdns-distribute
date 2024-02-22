@@ -8,5 +8,4 @@
 
 package modelpowerdns
 
-type Servers struct {
-}
+type Servers struct{}

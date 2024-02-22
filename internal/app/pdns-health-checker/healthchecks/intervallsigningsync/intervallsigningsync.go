@@ -13,7 +13,7 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -25,7 +25,8 @@ var (
 )
 
 func StartPeridoicalSigningSync(ms *microservice.Microservice, conf *config.ServiceConfiguration,
-	actualstate *models.State) {
+	actualstate *models.State,
+) {
 	const refreshintervall = 7 * 24 * time.Hour
 
 	hs := models.InitHealthServiceObject(ms, conf, actualstate)
@@ -88,8 +89,9 @@ func refreshSignaturesOnSecondaries(hs *models.HealthService) {
 	signingsynctotal.Inc()
 }
 
-func refreshSecondarySignatures(secondary servicediscovery.ResolvedService, primaryzonestatemap modelzone.Zonestatemap,
-	hs *models.HealthService) {
+func refreshSecondarySignatures(secondary messaging.ResolvedService, primaryzonestatemap modelzone.Zonestatemap,
+	hs *models.HealthService,
+) {
 	for zoneid := range primaryzonestatemap {
 		eventutils.PublishChangeZoneEvent(hs.Ms, utils.AppendIDToTopic(hs.Conf.ChangeEventTopic, secondary), zoneid)
 		changepublishedtotal.Inc()

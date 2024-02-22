@@ -130,7 +130,7 @@ func writeFile(rootpath string, outputfilename string, filledtemplate *bytes.Buf
 
 //nolint:cyclop
 func getProductiveBinaries(rootpath string, ignoredbinaries map[string]struct{}, primarybinaries, secondarybinaries, toolbinaries []string, requiredbinaries map[string]string) ([]string, []string, []string) {
-	binarylookuperr := filepath.Walk(filepath.Join(rootpath, "cmd"), func(path string, info os.FileInfo, err error) error {
+	binarylookuperr := filepath.Walk(filepath.Join(rootpath, "cmd"), func(path string, _ os.FileInfo, err error) error {
 		if filepath.Ext(path) == ".go" && filepath.Base(path) == "main.go" {
 			binname := filepath.Base(filepath.Dir(path))
 

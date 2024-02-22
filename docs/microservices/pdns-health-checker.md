@@ -37,5 +37,5 @@ zone event
 
 ### Workflow 5 / Get active secondaries and zones in background
 1. Wait for a configurable amount of time
-    1. Get active healthy secondaries from Consul (Service Discovery)
+    1. Get active secondaries from nats as active consumers
     2. Get active zones from powerdns primary per HTTP API

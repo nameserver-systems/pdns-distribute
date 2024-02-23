@@ -12,9 +12,9 @@ import (
 	"go.uber.org/mock/gomock"
 )
 
-//go:generate mockgen --destination internal/pkg/mocks/jetstream.go --package mocks github.com/nats-io/nats.go/jetstream JetStream
-//go:generate mockgen --destination internal/pkg/mocks/jetstream_stream.go --package mocks github.com/nats-io/nats.go/jetstream Stream
-//go:generate mockgen --destination internal/pkg/mocks/jetstream_consumer_info_listener.go --package mocks github.com/nats-io/nats.go/jetstream ConsumerInfoLister
+//go:generate mockgen --destination ../../../internal/pkg/mocks/jetstream.go --package mocks github.com/nats-io/nats.go/jetstream JetStream
+//go:generate mockgen --destination ../../../internal/pkg/mocks/jetstream_stream.go --package mocks github.com/nats-io/nats.go/jetstream Stream
+//go:generate mockgen --destination ../../../internal/pkg/mocks/jetstream_consumer_info_listener.go --package mocks github.com/nats-io/nats.go/jetstream ConsumerInfoLister
 func Test_natsBroker_CreatePersistentMessageStore(t *testing.T) {
 	t.Run("successful", func(t *testing.T) {
 		ctrl := gomock.NewController(t)

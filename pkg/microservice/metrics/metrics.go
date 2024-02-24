@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/collectors"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -16,8 +15,7 @@ func StartMetricsExporter(address string) error {
 	prometheus.MustRegister(collectors.NewGoCollector(collectors.WithGoCollectorRuntimeMetrics(collectors.MetricsAll)))
 	prometheus.MustRegister(collectors.NewBuildInfoCollector())
 
-	router := mux.NewRouter()
-	router.StrictSlash(true)
+	router := http.NewServeMux()
 	router.Handle("/metrics", promhttp.HandlerFor(
 		prometheus.DefaultGatherer, promhttp.HandlerOpts{
 			EnableOpenMetrics: true,

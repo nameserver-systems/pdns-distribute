@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/gorilla/mux"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/certificate"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-api-proxy/config"
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/httputils"
@@ -45,7 +44,8 @@ func startHTTPServer(serviceconfig *config.ServiceConfiguration) error {
 
 	const serverwritetimeout = 15 * time.Second
 
-	router := getNewRouterWithRoutes()
+	router := http.NewServeMux()
+	registerRoutes(router)
 
 	serviceurl := serviceconfig.ServiceURL
 
@@ -78,17 +78,4 @@ func startHTTPServer(serviceconfig *config.ServiceConfiguration) error {
 	}
 
 	return nil
-}
-
-func getNewRouterWithRoutes() *mux.Router {
-	router := getNewRouter()
-	router.StrictSlash(true)
-
-	registerRoutes(router)
-
-	return router
-}
-
-func getNewRouter() *mux.Router {
-	return mux.NewRouter()
 }

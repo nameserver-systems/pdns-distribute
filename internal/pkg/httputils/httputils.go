@@ -8,89 +8,62 @@ import (
 	"net/http"
 	neturl "net/url"
 	"strconv"
-	"strings"
 
-	"github.com/gorilla/mux"
+	"github.com/miekg/dns"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 )
-
-func CopyHTTPHeader(src, dest http.Header) {
-	for key, values := range src {
-		for _, value := range values {
-			dest.Add(key, value)
-		}
-	}
-}
 
 func GetZoneIDFromRequest(r *http.Request) (string, error) {
 	var err error
 
 	zoneid := getZoneIDFromRequestPath(r)
 
-	if hasNotFoundZoneID(zoneid) {
-		zoneid, err = getZoneIDFromRequestBody(r, zoneid)
+	if len(zoneid) == 0 {
+		zoneid, err = getZoneIDFromRequestBody(r)
 		if err != nil {
 			return "", err
 		}
 	}
 
-	zoneid = ensureTrailingDot(zoneid)
+	zoneid = dns.Fqdn(zoneid)
 
 	return zoneid, nil
 }
 
-func ensureTrailingDot(zoneid string) string {
-	if !strings.HasSuffix(zoneid, ".") {
-		zoneid += "."
-	}
-
-	return zoneid
-}
-
-func getZoneIDFromRequestBody(r *http.Request, zoneid string) (string, error) {
+func getZoneIDFromRequestBody(r *http.Request) (zoneID string, err error) {
 	var result map[string]interface{}
 
-	incomingbodybytes, readerr := io.ReadAll(r.Body)
-	if readerr != nil {
-		return "", readerr
+	incomingbodybytes, err := io.ReadAll(r.Body)
+	if err != nil {
+		return
 	}
 
-	closerr := r.Body.Close()
-	if closerr != nil {
-		return "", closerr
+	if err = r.Body.Close(); err != nil {
+		return
 	}
 
 	// necessary due to io.ReadAll clears after read the body and body is used for proxy
 	r.Body = io.NopCloser(bytes.NewBuffer(incomingbodybytes))
 
-	unmarshalerr := json.Unmarshal(incomingbodybytes, &result)
-	if unmarshalerr != nil {
-		return "", unmarshalerr
+	if err = json.Unmarshal(incomingbodybytes, &result); err != nil {
+		return
 	}
 
 	if rawzoneid, okid := result["id"]; okid {
-		zoneid = rawzoneid.(string)
+		zoneID = rawzoneid.(string)
 	} else if rawzonename, okname := result["name"]; okname {
-		zoneid = rawzonename.(string)
+		zoneID = rawzonename.(string)
 	}
 
-	if hasNotFoundZoneID(zoneid) {
-		return "", errZoneIDNotFound
+	if len(zoneID) == 0 {
+		err = errZoneIDNotFound
 	}
 
-	return zoneid, nil
+	return
 }
 
 func getZoneIDFromRequestPath(r *http.Request) string {
-	vars := mux.Vars(r)
-
-	zoneid := vars["zone_id"]
-
-	return zoneid
-}
-
-func hasNotFoundZoneID(zoneid string) bool {
-	return zoneid == ""
+	return r.PathValue("zone_id")
 }
 
 func GetHostAndPortFromURL(url string) (string, error) {
@@ -121,13 +94,6 @@ func GetHostnameFromURL(url string) (string, error) {
 	return hostname, parseerr
 }
 
-func CloseResponseBody(response *http.Response) {
-	err := response.Body.Close()
-	if err != nil {
-		logger.ErrorErrLog(err)
-	}
-}
-
 func ExecutePowerDNSRequest(method, url, apitoken string, body io.Reader) (string, error) {
 	var client http.Client
 
@@ -143,14 +109,14 @@ func ExecutePowerDNSRequest(method, url, apitoken string, body io.Reader) (strin
 		return "", executeerr
 	}
 
-	defer CloseResponseBody(response)
+	defer response.Body.Close()
 
 	responsebody, responsereaderr := io.ReadAll(response.Body)
 	if responsereaderr != nil {
 		return "", responsereaderr
 	}
 
-	if 200 > response.StatusCode || response.StatusCode >= 300 {
+	if !IsStatusCodeSuccesful(response.StatusCode) {
 		logger.ErrorLog("invalid pdns answer with http status" + strconv.Itoa(response.StatusCode) + " with message: " + string(responsebody))
 
 		return "", errInvalidPDNSAPIAnswer

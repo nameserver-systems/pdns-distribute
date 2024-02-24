@@ -104,7 +104,7 @@ func defaultProxy(respond http.ResponseWriter, incomingrequest *http.Request) {
 		logger.ErrorErrLog(preparerequesterr)
 	}
 
-	httputils.CopyHTTPHeader(incomingrequest.Header, proxyrequest.Header)
+	proxyrequest.Header = incomingrequest.Header.Clone()
 
 	proxyresponse, proxyexecuteerr := proxyclient.Do(proxyrequest) //nolint:bodyclose
 	if proxyexecuteerr != nil {
@@ -114,14 +114,22 @@ func defaultProxy(respond http.ResponseWriter, incomingrequest *http.Request) {
 		return
 	}
 
-	defer httputils.CloseResponseBody(proxyresponse)
+	defer func(Body io.ReadCloser) {
+		if err := Body.Close(); err != nil {
+			logger.ErrorErrLog(err)
+		}
+	}(proxyresponse.Body)
 
 	proxyresponsebody, proxyresponsereaderr := io.ReadAll(proxyresponse.Body)
 	if proxyresponsereaderr != nil {
 		logger.ErrorErrLog(proxyresponsereaderr)
 	}
 
-	httputils.CopyHTTPHeader(proxyresponse.Header, respond.Header())
+	for key, values := range proxyresponse.Header {
+		for _, value := range values {
+			respond.Header().Add(key, value)
+		}
+	}
 
 	respond.WriteHeader(proxyresponse.StatusCode)
 

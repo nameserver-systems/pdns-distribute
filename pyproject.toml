@@ -7,7 +7,7 @@ authors = ["linxside <noreply@linxsi.de>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 mkdocs = "1.5.3"
-mkdocs-material = "9.5.11"
+mkdocs-material = "9.5.12"
 
 [tool.poetry.dev-dependencies]
 pytest = "^8.0.0"

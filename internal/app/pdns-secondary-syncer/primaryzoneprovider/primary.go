@@ -125,7 +125,9 @@ func handleAXFR(writer dns.ResponseWriter, msg *dns.Msg, conf *config.ServiceCon
 	ch <- &dns.Envelope{RR: ansrrset}
 	close(ch)
 	wg.Wait()
-	writer.Close()
+	if err := writer.Close(); err != nil {
+		logger.ErrorErrLog(err)
+	}
 }
 
 func getZoneID(msg *dns.Msg) string {

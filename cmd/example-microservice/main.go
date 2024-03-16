@@ -40,7 +40,9 @@ func main() {
 
 	go startHealthServiceEndpoint(xd)
 
-	xd.MessageBroker.SubscribeAsync("test.test", waitformessage)
+	if err := xd.MessageBroker.SubscribeAsync("test.test", waitformessage); err != nil {
+		logger.FatalErrLog(err)
+	}
 
 	servutils.WaitToShutdownServer(&xd, func() {
 		closeMicroservice(xd)

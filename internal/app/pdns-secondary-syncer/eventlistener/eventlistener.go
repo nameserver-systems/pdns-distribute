@@ -31,7 +31,7 @@ func StartEventListenerAndWorker(ms *microservice.Microservice) error {
 		return err
 	}
 
-	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{serviceconfig.AddEventTopic, serviceconfig.ChangeEventTopic, serviceconfig.DeleteEventTopic})
+	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{"zone.>"})
 	if err != nil {
 		return err
 	}
@@ -79,9 +79,7 @@ func startZoneEventListeners(ms *microservice.Microservice, conf *config.Service
 				Conf:    conf,
 			})
 			createreceivedtotal.Inc()
-		}
-
-		if strings.HasPrefix(subject, changetopic) {
+		} else if strings.HasPrefix(subject, changetopic) {
 			go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
 				Jobtype: modeljob.ChangeZone,
 				Msg:     msg,
@@ -89,9 +87,7 @@ func startZoneEventListeners(ms *microservice.Microservice, conf *config.Service
 				Conf:    conf,
 			})
 			changereceivedtotal.Inc()
-		}
-
-		if strings.HasPrefix(subject, deltopic) {
+		} else if strings.HasPrefix(subject, deltopic) {
 			go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
 				Jobtype: modeljob.DeleteZone,
 				Msg:     msg,
@@ -99,6 +95,8 @@ func startZoneEventListeners(ms *microservice.Microservice, conf *config.Service
 				Conf:    conf,
 			})
 			deletereceivedtotal.Inc()
+		} else {
+			logger.DebugLog("[Zone Event Listener]: not matched on topic: " + subject)
 		}
 		if err := msg.Ack(); err != nil {
 			logger.ErrorErrLog(err)
@@ -120,5 +118,7 @@ func startSecondaryZoneStateEventListener(ms *microservice.Microservice, conf *c
 		zonestaterequesttotal.Inc()
 	}
 
-	ms.MessageBroker.SubscribeAsync(receivertopic, zonestatehandler)
+	if err := ms.MessageBroker.SubscribeAsync(receivertopic, zonestatehandler); err != nil {
+		logger.FatalErrLog(err)
+	}
 }

@@ -30,7 +30,7 @@ func StartHealthServices(ms *microservice.Microservice) error {
 		return err
 	}
 
-	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{serviceconfig.AddEventTopic, serviceconfig.ChangeEventTopic, serviceconfig.DeleteEventTopic})
+	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{"zone.>"})
 	if err != nil {
 		return err
 	}

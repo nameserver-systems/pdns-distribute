@@ -47,14 +47,14 @@ func StartEventCheckHandler(ms *microservice.Microservice, conf *config.ServiceC
 		if strings.HasPrefix(subject, addevent) {
 			go checkAddEvent(msg, hs, waitafterevent)
 			createreceivedtotal.Inc()
-		}
-		if strings.HasPrefix(subject, changeevent) {
+		} else if strings.HasPrefix(subject, changeevent) {
 			go checkChangeEvent(msg, hs, waitafterevent)
 			changereceivedtotal.Inc()
-		}
-		if strings.HasPrefix(subject, deleteevent) {
+		} else if strings.HasPrefix(subject, deleteevent) {
 			go checkDeleteEvent(msg, hs, waitafterevent)
 			deletereceivedtotal.Inc()
+		} else {
+			logger.DebugLog("[Zone Event Listener]: not matched on topic: " + subject)
 		}
 		if err := msg.Ack(); err != nil {
 			logger.ErrorErrLog(err)

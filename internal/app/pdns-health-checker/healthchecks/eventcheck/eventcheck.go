@@ -44,17 +44,18 @@ func StartEventCheckHandler(ms *microservice.Microservice, conf *config.ServiceC
 	consumer := ms.MessageBroker.GetConsumer()
 	_, err := consumer.Consume(func(msg jetstream.Msg) {
 		subject := msg.Subject()
-		if strings.HasPrefix(subject, addevent) {
+		switch {
+		case strings.HasPrefix(subject, addevent):
 			go checkAddEvent(msg, hs, waitafterevent)
 			createreceivedtotal.Inc()
-		}
-		if strings.HasPrefix(subject, changeevent) {
+		case strings.HasPrefix(subject, changeevent):
 			go checkChangeEvent(msg, hs, waitafterevent)
 			changereceivedtotal.Inc()
-		}
-		if strings.HasPrefix(subject, deleteevent) {
+		case strings.HasPrefix(subject, deleteevent):
 			go checkDeleteEvent(msg, hs, waitafterevent)
 			deletereceivedtotal.Inc()
+		default:
+			logger.DebugLog("[Zone Event Listener]: not matched on topic: " + subject)
 		}
 		if err := msg.Ack(); err != nil {
 			logger.ErrorErrLog(err)

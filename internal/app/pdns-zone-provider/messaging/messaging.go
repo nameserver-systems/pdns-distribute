@@ -4,6 +4,7 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/config"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-zone-provider/powerdns"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -15,8 +16,11 @@ func SubscribeToIncomingMessages(ms *microservice.Microservice, serviceconfig *c
 	topic := serviceconfig.ReceiverTopic
 	queue := "worker"
 
-	ms.MessageBroker.SubscribeQueueAsync(topic, queue, func(msg *nats.Msg) {
+	err := ms.MessageBroker.SubscribeQueueAsync(topic, queue, func(msg *nats.Msg) {
 		go powerdns.ProcessRequest(msg, serviceconfig)
 		requesttotal.Inc()
 	})
+	if err != nil {
+		logger.FatalErrLog(err)
+	}
 }

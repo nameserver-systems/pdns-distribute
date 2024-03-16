@@ -73,7 +73,7 @@ func (nb *natsBroker) CreatePersistentMessageReceiver(name, id, address, port, c
 	messageStartTime := time.Now().Add(-15 * time.Minute).Round(time.Minute)
 
 	cfg := jetstream.ConsumerConfig{
-		Name:          name,
+		Name:          name + id,
 		DeliverPolicy: jetstream.DeliverByStartTimePolicy,
 		OptStartTime:  &messageStartTime,
 		AckPolicy:     jetstream.AckNonePolicy,

@@ -20,7 +20,7 @@ func PublishDeleteZoneEvent(ms *microservice.Microservice, topic string, zoneid 
 		logger.ErrorErrLog(marshalerr)
 	}
 
-	ms.MessageBroker.PersistedPublish(topic, payload)
+	ms.MessageBroker.Publish(topic, payload)
 	logger.DebugLog("[Delete Zone Event] triggered for zone: " + zoneid + " on topic: " + topic) //nolint:goconst
 }
 
@@ -35,7 +35,7 @@ func PublishChangeZoneEvent(ms *microservice.Microservice, topic string, zoneid 
 		logger.ErrorErrLog(marshalerr)
 	}
 
-	ms.MessageBroker.PersistedPublish(topic, payload)
+	ms.MessageBroker.Publish(topic, payload)
 	logger.DebugLog("[Change Zone Event] triggered for zone: " + zoneid + " on topic: " + topic)
 }
 
@@ -50,6 +50,6 @@ func PublishCreateZoneEvent(ms *microservice.Microservice, topic string, zoneid 
 		logger.ErrorErrLog(marshalerr)
 	}
 
-	ms.MessageBroker.PersistedPublish(topic, payload)
+	ms.MessageBroker.Publish(topic, payload)
 	logger.DebugLog("[Create Zone Event] triggered for zone: " + zoneid + " on topic: " + topic)
 }

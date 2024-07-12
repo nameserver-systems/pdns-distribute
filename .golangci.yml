@@ -32,11 +32,9 @@ linters:
     - dupl
     - exportloopref
     - govet
-  disable:
-    - errcheck
+  disable-all: false
   presets:
     - bugs
-    - format
     - unused
     - complexity
     - performance

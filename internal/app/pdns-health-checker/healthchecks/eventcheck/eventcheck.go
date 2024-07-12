@@ -3,7 +3,6 @@ package eventcheck
 import (
 	"encoding/json"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/config"
@@ -15,8 +14,8 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
-	"github.com/nats-io/nats.go/jetstream"
+	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -41,34 +40,24 @@ func StartEventCheckHandler(ms *microservice.Microservice, conf *config.ServiceC
 	changeevent := hs.Conf.ChangeEventTopic
 	deleteevent := hs.Conf.DeleteEventTopic
 
-	consumer := ms.MessageBroker.GetConsumer()
-	_, err := consumer.Consume(func(msg jetstream.Msg) {
-		subject := msg.Subject()
-		if strings.HasPrefix(subject, addevent) {
-			go checkAddEvent(msg, hs, waitafterevent)
-			createreceivedtotal.Inc()
-		}
-		if strings.HasPrefix(subject, changeevent) {
-			go checkChangeEvent(msg, hs, waitafterevent)
-			changereceivedtotal.Inc()
-		}
-		if strings.HasPrefix(subject, deleteevent) {
-			go checkDeleteEvent(msg, hs, waitafterevent)
-			deletereceivedtotal.Inc()
-		}
-		if err := msg.Ack(); err != nil {
-			logger.ErrorErrLog(err)
-		}
+	ms.MessageBroker.SubscribeAsync(addevent, func(msg *nats.Msg) {
+		go checkAddEvent(msg, hs, waitafterevent)
+		createreceivedtotal.Inc()
 	})
-	if err != nil {
-		logger.ErrorErrLog(err)
 
-		return
-	}
+	ms.MessageBroker.SubscribeAsync(changeevent, func(msg *nats.Msg) {
+		go checkChangeEvent(msg, hs, waitafterevent)
+		changereceivedtotal.Inc()
+	})
+
+	ms.MessageBroker.SubscribeAsync(deleteevent, func(msg *nats.Msg) {
+		go checkDeleteEvent(msg, hs, waitafterevent)
+		deletereceivedtotal.Inc()
+	})
 }
 
-func checkDeleteEvent(msg jetstream.Msg, hs *models.HealthService, waitafterevent time.Duration) {
-	data := msg.Data()
+func checkDeleteEvent(msg *nats.Msg, hs *models.HealthService, waitafterevent time.Duration) {
+	data := msg.Data
 	deleteEventObject := modelevent.ZoneDeleteEvent{}
 
 	parseerr := json.Unmarshal(data, &deleteEventObject)
@@ -93,8 +82,8 @@ func checkDeleteEvent(msg jetstream.Msg, hs *models.HealthService, waitaftereven
 	checkZoneFreshnessOfSecondaries(eventcheck, hs)
 }
 
-func checkChangeEvent(msg jetstream.Msg, hs *models.HealthService, waitafterevent time.Duration) {
-	data := msg.Data()
+func checkChangeEvent(msg *nats.Msg, hs *models.HealthService, waitafterevent time.Duration) {
+	data := msg.Data
 	changeEventObject := modelevent.ZoneChangeEvent{}
 
 	parseerr := json.Unmarshal(data, &changeEventObject)
@@ -119,8 +108,8 @@ func checkChangeEvent(msg jetstream.Msg, hs *models.HealthService, waitaftereven
 	checkZoneFreshnessOfSecondaries(eventcheck, hs)
 }
 
-func checkAddEvent(msg jetstream.Msg, hs *models.HealthService, waitafterevent time.Duration) {
-	data := msg.Data()
+func checkAddEvent(msg *nats.Msg, hs *models.HealthService, waitafterevent time.Duration) {
+	data := msg.Data
 	addEventObject := modelevent.ZoneAddEvent{}
 
 	parseerr := json.Unmarshal(data, &addEventObject)
@@ -170,9 +159,8 @@ func getPrimaryZoneSerial(zoneid string, hs *models.HealthService) (int32, error
 	return dnsutils.GetZoneSerialFromFromPrimary(pdnsconnection, zoneid)
 }
 
-func checkSecondaryZoneFreshness(eventcheck models.EventCheckObject, secondary messaging.ResolvedService,
-	hs *models.HealthService,
-) {
+func checkSecondaryZoneFreshness(eventcheck models.EventCheckObject, secondary servicediscovery.ResolvedService,
+	hs *models.HealthService) {
 	zoneid := eventcheck.Zoneid
 	primaryserial := eventcheck.Primaryserial
 

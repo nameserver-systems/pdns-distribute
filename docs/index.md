@@ -11,14 +11,14 @@ features.
 
 ## Features
 * event based architecture (hidden primary, public secondary) for fast and scalable sync
-* self-healing of outdated secondaries
+* self healing of outdated secondaries
 * message driven 
 * most events parallelized
 * easy deployment by providing .deb packages and systemd configs for automatic restart
 * security by keeping it simple
-* security: transport encryption with by nats
+* security: and encryption provided by consul and nats
 * security: secondaries doesn't have dnssec private keys
-* security: if system load is too high the health check will be show a warning
+* security: if system load is too high the health check will be show an warning
 * full ipv6 support (ipv4 is optional)
 
 * self-healing
@@ -40,31 +40,37 @@ Microservices:
 ## Architecture
 
 - 1x primary (internal data management)
-    - clients can use the primary through the powerdns api
+    - clients can using the primary through the powerdns api
     - contains zone information
 - Nx secondary (public authoritative nameserver)
     - serves zone data
-- Nx nats with jetstream (message broker)
-    - complete communication between microservices will use handled by broker
+- Nx consul (service discovery)
     - used for discovering active healthy secondaries
     - healthchecks
-      - after a defined interval without a ping a secondary will be marked as inactive
+        - every microservice pings consul in a configurable interval
+        - after three times interval without a ping from a microservice, this service will be unhealthy
+        - after ten times interval without a ping the service will be deregistered
+        - if the systemload is greater than 10 the service will be in a warn state
+- Nx nats (message broker)
+    - complete communication between microservices will use handled by broker
 
 ### Security
 
 Sensitive data for dnssec signing is kept only on the primary server. The signed zone data - without the secret keys - will be
-transferred to every secondary server. All microservices will connect to nats, it's responsible for secure access
+transferred to every secondary server. All microservices will connect to consul and nats, they are responsible for
+secure access
 to the infrastructure and encryption of server to server connections. This has the advantage of not having to care about certificates
 for each microservice.
 
 ## Techstack
 
 * written in Go
-* NATS as Message Broker
+* Consul for Service Discovery
+* NATS as Message Broker for the biggest amount of communication
 
 ## Dependencies
 
-* go (>= 1.22)
+* go (>= 1.17)
 * podman
 * golangci-lint
 * goreleaser

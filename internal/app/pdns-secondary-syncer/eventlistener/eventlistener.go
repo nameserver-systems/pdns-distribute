@@ -1,8 +1,6 @@
 package eventlistener
 
 import (
-	"strings"
-
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/config"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/modeljob"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-secondary-syncer/powerdns"
@@ -11,7 +9,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
-	"github.com/nats-io/nats.go/jetstream"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -26,25 +23,9 @@ var (
 func StartEventListenerAndWorker(ms *microservice.Microservice) error {
 	serviceconfig := config.GetConfiguration(ms)
 
-	port, err := ms.GetServicePort()
-	if err != nil {
-		return err
-	}
-
-	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{serviceconfig.AddEventTopic, serviceconfig.ChangeEventTopic, serviceconfig.DeleteEventTopic})
-	if err != nil {
-		return err
-	}
-
-	consumer, err := ms.MessageBroker.CreatePersistentMessageReceiver("secondary-syncer-event-client", ms.ID, "add", port, "secondary", stream)
-	if err != nil {
-		return err
-	}
-
-	ms.MessageBroker.SetStream(stream)
-	ms.MessageBroker.SetConsumer(consumer)
-
-	startZoneEventListeners(ms, serviceconfig)
+	startAddZoneEventListener(ms, serviceconfig)
+	startChangeZoneEventListener(ms, serviceconfig)
+	startDeleteZoneEventListener(ms, serviceconfig)
 	startSecondaryZoneStateEventListener(ms, serviceconfig)
 	primaryzoneprovider.StartAXFRProvider(ms, serviceconfig)
 
@@ -63,52 +44,58 @@ func StopDNSServer() {
 	}
 }
 
-func startZoneEventListeners(ms *microservice.Microservice, conf *config.ServiceConfiguration) (cancelCtx jetstream.ConsumeContext) {
+func startAddZoneEventListener(ms *microservice.Microservice, conf *config.ServiceConfiguration) {
 	addtopic := conf.AddEventTopic
-	changetopic := conf.ChangeEventTopic
-	deltopic := conf.DeleteEventTopic
+	hostaddtopic := addtopic + "." + ms.ID
 
-	consumer := ms.MessageBroker.GetConsumer()
-	cancelCtx, err := consumer.Consume(func(msg jetstream.Msg) {
-		subject := msg.Subject()
-		if strings.HasPrefix(subject, addtopic) {
-			go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
-				Jobtype: modeljob.AddZone,
-				Msg:     msg,
-				Ms:      ms,
-				Conf:    conf,
-			})
-			createreceivedtotal.Inc()
-		}
-
-		if strings.HasPrefix(subject, changetopic) {
-			go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
-				Jobtype: modeljob.ChangeZone,
-				Msg:     msg,
-				Ms:      ms,
-				Conf:    conf,
-			})
-			changereceivedtotal.Inc()
-		}
-
-		if strings.HasPrefix(subject, deltopic) {
-			go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
-				Jobtype: modeljob.DeleteZone,
-				Msg:     msg,
-				Ms:      ms,
-				Conf:    conf,
-			})
-			deletereceivedtotal.Inc()
-		}
-		if err := msg.Ack(); err != nil {
-			logger.ErrorErrLog(err)
-		}
-	})
-	if err != nil {
-		logger.ErrorErrLog(err)
+	addhandler := func(msg *nats.Msg) {
+		go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
+			Jobtype: modeljob.AddZone,
+			Msg:     msg,
+			Ms:      ms,
+			Conf:    conf,
+		})
+		createreceivedtotal.Inc()
 	}
 
-	return
+	ms.MessageBroker.SubscribeAsync(addtopic, addhandler)
+	ms.MessageBroker.SubscribeAsync(hostaddtopic, addhandler)
+}
+
+func startChangeZoneEventListener(ms *microservice.Microservice, conf *config.ServiceConfiguration) {
+	changetopic := conf.ChangeEventTopic
+	hostchangetopic := changetopic + "." + ms.ID
+
+	changehandler := func(msg *nats.Msg) {
+		go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
+			Jobtype: modeljob.ChangeZone,
+			Msg:     msg,
+			Ms:      ms,
+			Conf:    conf,
+		})
+		changereceivedtotal.Inc()
+	}
+
+	ms.MessageBroker.SubscribeAsync(changetopic, changehandler)
+	ms.MessageBroker.SubscribeAsync(hostchangetopic, changehandler)
+}
+
+func startDeleteZoneEventListener(ms *microservice.Microservice, conf *config.ServiceConfiguration) {
+	deltopic := conf.DeleteEventTopic
+	hostdeltopic := deltopic + "." + ms.ID
+
+	delhandler := func(msg *nats.Msg) {
+		go worker.EnqueJob(&modeljob.PowerDNSAPIJob{
+			Jobtype: modeljob.DeleteZone,
+			Msg:     msg,
+			Ms:      ms,
+			Conf:    conf,
+		})
+		deletereceivedtotal.Inc()
+	}
+
+	ms.MessageBroker.SubscribeAsync(deltopic, delhandler)
+	ms.MessageBroker.SubscribeAsync(hostdeltopic, delhandler)
 }
 
 func startSecondaryZoneStateEventListener(ms *microservice.Microservice, conf *config.ServiceConfiguration) {

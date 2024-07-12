@@ -27,16 +27,21 @@ Microservices:
     - contains zone information
 - Nx secondary (public authoritative nameserver)
     - serves zone data
-- Nx nats with jetstream (message broker)
-    - complete communication between microservices will use handled by broker
+- Nx consul (service discovery)
     - used for discovering active healthy secondaries
     - healthchecks
-        - after a defined interval without a ping a secondary will be marked as inactive
+        - every microservice pings consul in a configurable interval
+        - after three times interval without a ping from a microservice, this service will be unhealthy
+        - after ten times interval without a ping the service will be deregistered
+        - if the systemload is greater than 10 the service will be in a warn state
+- Nx nats (message broker)
+    - complete communication between microservices will use handled by broker
 
 ## Techstack
 
 * written in Go
-* NATS as Message Broker
+* Consul for Service Discovery
+* NATS as Message Broker for the biggest amount of communication
 
 ## Dependencies
 

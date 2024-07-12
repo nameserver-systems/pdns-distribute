@@ -20,7 +20,13 @@ be adopted to your requirements. The packages include default configs.
     
     [Prometheus]
     Address = "localhost:9502" # turn off by set empty string
-
+    
+    [ServiceDiscovery]
+    URL = "http://localhost:8500"
+    HealthPingIntervall = "5s"
+    Username = "" # optional
+    Password = "" # optional
+    
     [MessageBroker]
     URL = "nats://localhost:4222"
     Username = "" # optional
@@ -51,6 +57,12 @@ be adopted to your requirements. The packages include default configs.
     [Prometheus]
     Address = "localhost:9501" # turn off by set empty string
     
+    [ServiceDiscovery]
+    URL = "http://localhost:8500"
+    HealthPingIntervall = "5s"
+    Username = "" # optional
+    Password = "" # optional
+    
     [MessageBroker]
     URL = "nats://localhost:4222"
     Username = "" # optional
@@ -67,7 +79,7 @@ be adopted to your requirements. The packages include default configs.
     Del = "zone.delete"
     
     [ZoneStateTopics]
-    Prefix = "zonestate.>"
+    Prefix = "zonestate."
     
     [HealthChecks]
     EventCheckWaitTime = "20s"
@@ -92,6 +104,12 @@ be adopted to your requirements. The packages include default configs.
     [Prometheus]
     Address = "localhost:9500" # turn off by set empty string
     
+    [ServiceDiscovery]
+    URL = "http://localhost:8500"
+    HealthPingIntervall = "5s"
+    Username = "" # optional
+    Password = "" # optional
+    
     [MessageBroker]
     URL = "nats://localhost:4222"
     Username = "" # optional
@@ -105,7 +123,7 @@ be adopted to your requirements. The packages include default configs.
     AXFRAddress = "127.0.0.1:53"
     
     [ZoneDataTopics]
-    Wildcard = "zonedata.>"
+    Wildcard = "zonedata.*"
     ```
 
 ## Secondary
@@ -124,6 +142,12 @@ be adopted to your requirements. The packages include default configs.
     
     [Prometheus]
     Address = "localhost:9503" # turn off by set empty string
+    
+    [ServiceDiscovery]
+    URL = "http://localhost:8500"
+    HealthPingIntervall = "5s"
+    Username = "" # optional
+    Password = "" # optional
     
     [MessageBroker]
     URL = "nats://localhost:4222"
@@ -149,5 +173,5 @@ be adopted to your requirements. The packages include default configs.
     Prefix = "zonedata."
     
     [ZoneStateTopics]
-    Prefix = "zonestate.>"
+    Prefix = "zonestate."
     ```

@@ -2,16 +2,18 @@ sequenceDiagram
 participant a as health-checker
 participant b as [Primary PowerDNS API]
 participant c as [Message Broker]
+participant d as [Service Discovery]
 participant e as [Secondary PowerDNS]
 c-xa: {Zone.Add} or {Zone.Change}
 a->>+b: Get-Zone-Serial
 b-->>-a: Zone-Serial
-a->>+c: Get-Active-Secondaries
-c-->>-a: Active-Secondaries
+a->>+d: Get-Active-Secondaries
+d-->>-a: Active-Secondaries
 loop All Secondaries
 a->>+e: Get-Zone-Serial
 e-->>-a: Zone-Serial
 end
 a-xc: {Zone.Change}
-Note over a,c: pdns-primary
+Note over a,b: pdns-primary
+Note over c,d: pdns-primary
 Note over e: pdns-secondary

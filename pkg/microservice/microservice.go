@@ -51,7 +51,8 @@ func (ms *Microservice) StartService() (err error) {
 
 	ms.loadMicroserviceSettings()
 
-	err = ms.initializeMessageBroker(serviceidentifier)
+	ms.initializeMessageBroker(serviceidentifier)
+
 	if err != nil {
 		return err
 	}

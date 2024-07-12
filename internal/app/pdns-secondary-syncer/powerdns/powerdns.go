@@ -2,8 +2,6 @@ package powerdns
 
 import (
 	"encoding/json"
-	"os"
-	"os/exec"
 	"sync"
 	"time"
 

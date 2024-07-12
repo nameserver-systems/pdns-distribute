@@ -2,6 +2,8 @@ package microservice
 
 import (
 	"fmt"
+	"net"
+	"net/url"
 	"os"
 
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/configuration"

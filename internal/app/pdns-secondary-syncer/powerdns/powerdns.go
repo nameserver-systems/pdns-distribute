@@ -143,7 +143,7 @@ func CreateZonePerAPI(zoneid string, conf *config.ServiceConfiguration) error {
 		Apitoken:    conf.PowerDNSAPIToken,
 	}
 
-	payload, preparationerr := prepareCreateZoneRequest(zoneid, conf.AXFRPrimaryAddress)
+	payload, preparationerr := prepareCreateZoneRequest(zoneid)
 	if preparationerr != nil {
 		return preparationerr
 	}
@@ -163,7 +163,7 @@ func CreateZonePerAPI(zoneid string, conf *config.ServiceConfiguration) error {
 	return nil
 }
 
-func prepareCreateZoneRequest(zoneid, axfrPrimaryAddress string) ([]byte, error) {
+func prepareCreateZoneRequest(zoneid string) ([]byte, error) {
 	zonecreation := modelpowerdns.Zone{
 		ID:          zoneid,
 		Name:        zoneid,

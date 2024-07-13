@@ -24,33 +24,14 @@ var (
 
 func StartHealthServices(ms *microservice.Microservice) error {
 	serviceconfig := config.GetConfiguration(ms)
-
-	port, err := ms.GetServicePort()
-	if err != nil {
-		return err
-	}
-
-	stream, err := ms.MessageBroker.CreatePersistentMessageStore("pdns-distribute-event-store", []string{"zone.>"})
-	if err != nil {
-		return err
-	}
-
-	consumer, err := ms.MessageBroker.CreatePersistentMessageReceiver("health-checker-event-client", ms.ID, "add", port, "healthchecker", stream)
-	if err != nil {
-		return err
-	}
-
-	ms.MessageBroker.SetStream(stream)
-	ms.MessageBroker.SetConsumer(consumer)
-
 	actualstate := models.GenerateStateObject()
 
-	err = SetActiveZonesInState(serviceconfig, actualstate)
-	if err != nil {
-		return err
+	err2 := SetActiveZonesInState(serviceconfig, actualstate)
+	if err2 != nil {
+		return err2
 	}
 
-	err = SetActiveSecondariesInState(ms, actualstate)
+	err := SetActiveSecondariesInState(ms, actualstate)
 	if err != nil {
 		return err
 	}

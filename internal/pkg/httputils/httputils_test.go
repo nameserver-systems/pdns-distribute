@@ -128,7 +128,7 @@ func TestGetZoneIDFromRequest(t *testing.T) { //nolint:funlen
 		mux := http.NewServeMux()
 		mux.HandleFunc("GET /{zone_id}", func(writer http.ResponseWriter, request *http.Request) {
 			actualZone, err := GetZoneIDFromRequest(request)
-			require.NoError(t, err)
+			assert.NoError(t, err)
 
 			_, _ = fmt.Fprint(writer, actualZone)
 		})
@@ -150,7 +150,7 @@ func TestGetZoneIDFromRequest(t *testing.T) { //nolint:funlen
 		mux := http.NewServeMux()
 		mux.HandleFunc("POST /", func(writer http.ResponseWriter, request *http.Request) {
 			actualZone, err := GetZoneIDFromRequest(request)
-			require.NoError(t, err)
+			assert.NoError(t, err)
 
 			_, _ = fmt.Fprint(writer, actualZone)
 		})
@@ -174,7 +174,7 @@ func TestGetZoneIDFromRequest(t *testing.T) { //nolint:funlen
 		mux := http.NewServeMux()
 		mux.HandleFunc("POST /", func(writer http.ResponseWriter, request *http.Request) {
 			actualZone, err := GetZoneIDFromRequest(request)
-			require.EqualError(t, err, errZoneIDNotFound.Error())
+			assert.EqualError(t, err, errZoneIDNotFound.Error())
 
 			_, _ = fmt.Fprint(writer, actualZone)
 		})
@@ -246,10 +246,10 @@ func Test_getZoneIDFromRequestBody(t *testing.T) {
 func TestExecutePowerDNSRequest(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		s := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
-			require.Equal(t, "1234", request.Header.Get("X-API-Key"))
+			assert.Equal(t, "1234", request.Header.Get("X-API-Key"))
 			data, err := io.ReadAll(request.Body)
-			require.NoError(t, err)
-			require.Equal(t, "{}", string(data))
+			assert.NoError(t, err)
+			assert.Equal(t, "{}", string(data))
 
 			_, _ = fmt.Fprint(writer, "ok")
 		}))

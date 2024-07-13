@@ -19,4 +19,4 @@ fetching zone data.
 
 ### Workflow / Respond Zone State
 1. Listen for secondary state request events (message broker)
-    1. Respond the secondaries state via the message broker
+    2. Respond the secondaries state via the message broker

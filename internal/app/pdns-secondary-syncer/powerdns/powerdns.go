@@ -13,7 +13,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nats-io/nats.go"
-	"github.com/nats-io/nats.go/jetstream"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -40,7 +39,7 @@ var (
 	workerlockcount = promauto.NewGauge(prometheus.GaugeOpts{Name: "secondarysyncer_worker_lock_count", Help: "The actual count of worker locks"})
 )
 
-func AddZone(msg jetstream.Msg, conf *config.ServiceConfiguration) {
+func AddZone(msg *nats.Msg, conf *config.ServiceConfiguration) {
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,
@@ -144,7 +143,7 @@ func CreateZonePerAPI(zoneid string, conf *config.ServiceConfiguration) error {
 		Apitoken:    conf.PowerDNSAPIToken,
 	}
 
-	payload, preparationerr := prepareCreateZoneRequest(zoneid, conf.AXFRPrimaryAddress)
+	payload, preparationerr := prepareCreateZoneRequest(zoneid)
 	if preparationerr != nil {
 		return preparationerr
 	}
@@ -164,14 +163,14 @@ func CreateZonePerAPI(zoneid string, conf *config.ServiceConfiguration) error {
 	return nil
 }
 
-func prepareCreateZoneRequest(zoneid, axfrPrimaryAddress string) ([]byte, error) {
+func prepareCreateZoneRequest(zoneid string) ([]byte, error) {
 	zonecreation := modelpowerdns.Zone{
 		ID:          zoneid,
 		Name:        zoneid,
 		Kind:        "Slave",
-		Masters:     []string{axfrPrimaryAddress},
+		Masters:     []string{"127.0.0.1:20102"},
 		Nameservers: make([]string, 0),
-		//	Zone:        zonedata.ZoneData, // DISABLED DUE TO AXFR ZONES
+		//	Zone:        zonedata.ZoneData, // DISABLED DUE TO SLAVING ZONES
 		SoaEdit:    "NONE",
 		SoaEditAPI: "OFF",
 		Presigned:  true,
@@ -237,8 +236,8 @@ func waitForPrimaryToStoreZoneAfterChange(conf *config.ServiceConfiguration) {
 	time.Sleep(conf.EventDelay)
 }
 
-func getZoneIDFromAddEventMessage(msg jetstream.Msg) (string, error) {
-	incomingmdata := msg.Data()
+func getZoneIDFromAddEventMessage(msg *nats.Msg) (string, error) {
+	incomingmdata := msg.Data
 	addevent := modelevent.ZoneAddEvent{}
 
 	unmarshalerr := json.Unmarshal(incomingmdata, &addevent)
@@ -251,8 +250,8 @@ func getZoneIDFromAddEventMessage(msg jetstream.Msg) (string, error) {
 	return addevent.Zone, nil
 }
 
-func getZoneIDFromChangeEventMessage(msg jetstream.Msg) (string, error) {
-	incomingmdata := msg.Data()
+func getZoneIDFromChangeEventMessage(msg *nats.Msg) (string, error) {
+	incomingmdata := msg.Data
 	changeevent := modelevent.ZoneChangeEvent{}
 
 	unmarshalerr := json.Unmarshal(incomingmdata, &changeevent)
@@ -265,8 +264,8 @@ func getZoneIDFromChangeEventMessage(msg jetstream.Msg) (string, error) {
 	return changeevent.Zone, nil
 }
 
-func getZoneIDFromDeleteEventMessage(msg jetstream.Msg) (string, error) {
-	incomingmdata := msg.Data()
+func getZoneIDFromDeleteEventMessage(msg *nats.Msg) (string, error) {
+	incomingmdata := msg.Data
 	deleteevent := modelevent.ZoneDeleteEvent{}
 
 	unmarshalerr := json.Unmarshal(incomingmdata, &deleteevent)
@@ -279,7 +278,7 @@ func getZoneIDFromDeleteEventMessage(msg jetstream.Msg) (string, error) {
 	return deleteevent.Zone, nil
 }
 
-func ChangeZone(msg jetstream.Msg, conf *config.ServiceConfiguration) { //nolint:funlen
+func ChangeZone(msg *nats.Msg, conf *config.ServiceConfiguration) { //nolint:funlen
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,
@@ -350,7 +349,7 @@ func ChangeZone(msg jetstream.Msg, conf *config.ServiceConfiguration) { //nolint
 	logger.DebugLog("[Change Zone] triggered for zone: " + zoneid + " with: AXFR") // zonedata.ZoneData)
 }
 
-func DeleteZone(msg jetstream.Msg, conf *config.ServiceConfiguration) {
+func DeleteZone(msg *nats.Msg, conf *config.ServiceConfiguration) {
 	pdnsconnection := modelpowerdns.PDNSconnectionobject{
 		PowerDNSurl: conf.PowerDNSURL,
 		ServerID:    conf.PowerDNSServerID,

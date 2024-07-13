@@ -10,6 +10,12 @@ DEBUG = true
 [Prometheus]
 Address = "0.0.0.0:9503" # turn off by set empty string
 
+[ServiceDiscovery]
+URL = "http://consul:8500"
+HealthPingIntervall = "5s"
+Username = "" # optional
+Password = "" # optional
+
 [MessageBroker]
 URL = "nats://nats:4222"
 Username = "" # optional
@@ -23,7 +29,7 @@ EventDelay = "0s"
 APIWorker = 4
 
 [AXFRPrimary]
-Address = "10.89.1.54:20102"
+Address = "0.0.0.0:20102"
 
 [ZoneEventTopics]
 Add = "zone.add"
@@ -34,4 +40,4 @@ Del = "zone.delete"
 Prefix = "zonedata."
 
 [ZoneStateTopics]
-Prefix = "zonestate.>"
+Prefix = "zonestate."

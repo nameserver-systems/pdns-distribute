@@ -10,12 +10,6 @@ DEBUG = true
 [Prometheus]
 Address = "localhost:9501" # turn off by set empty string
 
-[ServiceDiscovery]
-URL = "http://localhost:8500"
-HealthPingIntervall = "5s"
-Username = "" # optional
-Password = "" # optional
-
 [MessageBroker]
 URL = "nats://localhost:4222"
 Username = "" # optional
@@ -39,3 +33,8 @@ EventCheckWaitTime = "20s"
 ActiveZoneSecondaryRefreshIntervall = "5m"
 PeriodicalCheckIntervall = "15m"
 NSEC3CheckIntervall = "15m"
+
+Secondaries = [
+sec01.example.org,
+sec02.example.org,
+]

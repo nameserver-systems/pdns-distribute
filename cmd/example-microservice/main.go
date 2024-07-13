@@ -59,10 +59,7 @@ func printBuildInfo() {
 }
 
 func closeMicroservice(xd msframe.Microservice) {
-	err := xd.CloseMicroservice()
-	if err != nil {
-		logger.FatalErrLog(err)
-	}
+	xd.CloseMicroservice()
 }
 
 func waitformessage(msg *nats.Msg) {

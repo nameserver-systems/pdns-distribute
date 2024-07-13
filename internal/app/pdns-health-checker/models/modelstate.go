@@ -1,11 +1,13 @@
 package models
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"sync"
 	"time"
 
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
+	msframe "github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -20,9 +22,8 @@ type State struct {
 	expectedZones  modelzone.Zonestatemap
 	zonesChangedAt time.Time
 
-	secondaryMutex       sync.Mutex
-	activeSecondaries    []servicediscovery.ResolvedService
-	secondariesChangedAt time.Time
+	secondaryMutex sync.Mutex
+	secondaries    []HashedSecondary
 }
 
 func GenerateStateObject() *State {
@@ -66,20 +67,12 @@ func (s *State) GetExpectedZoneChangeTime() time.Time {
 	return s.zonesChangedAt
 }
 
-func (s *State) SetActiveSecondaries(secondaries []servicediscovery.ResolvedService) {
-	s.secondaryMutex.Lock()
-	secondarystatelockcount.Inc()
-
-	defer func() {
-		s.secondaryMutex.Unlock()
-		secondarystatelockcount.Dec()
-	}()
-
-	s.activeSecondaries = secondaries
-	s.secondariesChangedAt = time.Now()
+type HashedSecondary struct {
+	ID               string
+	SecondaryAddress string
 }
 
-func (s *State) GetActiveSecondaries() []servicediscovery.ResolvedService {
+func (s *State) SetActiveSecondaries(microservice *msframe.Microservice) {
 	s.secondaryMutex.Lock()
 	secondarystatelockcount.Inc()
 
@@ -88,5 +81,24 @@ func (s *State) GetActiveSecondaries() []servicediscovery.ResolvedService {
 		secondarystatelockcount.Dec()
 	}()
 
-	return s.activeSecondaries
+	s.secondaries = make([]HashedSecondary, 0, len(microservice.Secondaries))
+	for i, secondary := range microservice.Secondaries {
+		h := HashedSecondary{
+			ID:               fmt.Sprintf("%x", sha256.Sum256([]byte(secondary))),
+			SecondaryAddress: secondary,
+		}
+		s.secondaries[i] = h
+	}
+}
+
+func (s *State) GetActiveSecondaries() []HashedSecondary {
+	s.secondaryMutex.Lock()
+	secondarystatelockcount.Inc()
+
+	defer func() {
+		s.secondaryMutex.Unlock()
+		secondarystatelockcount.Dec()
+	}()
+
+	return s.secondaries
 }

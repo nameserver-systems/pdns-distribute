@@ -14,7 +14,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 	"github.com/nats-io/nats.go"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -159,7 +158,7 @@ func getPrimaryZoneSerial(zoneid string, hs *models.HealthService) (int32, error
 	return dnsutils.GetZoneSerialFromFromPrimary(pdnsconnection, zoneid)
 }
 
-func checkSecondaryZoneFreshness(eventcheck models.EventCheckObject, secondary servicediscovery.ResolvedService,
+func checkSecondaryZoneFreshness(eventcheck models.EventCheckObject, secondary models.HashedSecondary,
 	hs *models.HealthService) {
 	zoneid := eventcheck.Zoneid
 	primaryserial := eventcheck.Primaryserial

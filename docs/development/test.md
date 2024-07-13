@@ -5,8 +5,6 @@ The local test environment consist of one container per pdns-distribute microser
 
 *Container Overview:*
 
-??? note "consul"
-The service discovery tool consul exposes the ports 8500 and 8501 to the host. Consul runs in standalone mode.
 ??? note "nats"
     The message broker service nats exposes the ports 4222 and 8222 to the host. Nats runs in cluster mode. Every service connects to this nats instance.
 ??? note "nats2"

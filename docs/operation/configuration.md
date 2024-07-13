@@ -21,12 +21,6 @@ be adopted to your requirements. The packages include default configs.
     [Prometheus]
     Address = "localhost:9502" # turn off by set empty string
     
-    [ServiceDiscovery]
-    URL = "http://localhost:8500"
-    HealthPingIntervall = "5s"
-    Username = "" # optional
-    Password = "" # optional
-    
     [MessageBroker]
     URL = "nats://localhost:4222"
     Username = "" # optional
@@ -39,6 +33,11 @@ be adopted to your requirements. The packages include default configs.
     Add = "zone.add"
     Mod = "zone.modified"
     Del = "zone.delete"
+
+    Secondaries = [
+    sec01.example.org,
+    sec02.example.org,
+    ]
     ```
 
 ### Health Checker
@@ -56,12 +55,6 @@ be adopted to your requirements. The packages include default configs.
     
     [Prometheus]
     Address = "localhost:9501" # turn off by set empty string
-    
-    [ServiceDiscovery]
-    URL = "http://localhost:8500"
-    HealthPingIntervall = "5s"
-    Username = "" # optional
-    Password = "" # optional
     
     [MessageBroker]
     URL = "nats://localhost:4222"
@@ -86,6 +79,11 @@ be adopted to your requirements. The packages include default configs.
     ActiveZoneSecondaryRefreshIntervall = "5m"
     PeriodicalCheckIntervall = "15m"
     NSEC3CheckIntervall = "15m"
+
+    Secondaries = [
+    sec01.example.org,
+    sec02.example.org,
+    ]
     ```
 
 ### Zone Provider
@@ -104,12 +102,6 @@ be adopted to your requirements. The packages include default configs.
     [Prometheus]
     Address = "localhost:9500" # turn off by set empty string
     
-    [ServiceDiscovery]
-    URL = "http://localhost:8500"
-    HealthPingIntervall = "5s"
-    Username = "" # optional
-    Password = "" # optional
-    
     [MessageBroker]
     URL = "nats://localhost:4222"
     Username = "" # optional
@@ -124,6 +116,11 @@ be adopted to your requirements. The packages include default configs.
     
     [ZoneDataTopics]
     Wildcard = "zonedata.*"
+    
+    Secondaries = [
+    sec01.example.org,
+    sec02.example.org,
+    ]
     ```
 
 ## Secondary
@@ -142,13 +139,7 @@ be adopted to your requirements. The packages include default configs.
     
     [Prometheus]
     Address = "localhost:9503" # turn off by set empty string
-    
-    [ServiceDiscovery]
-    URL = "http://localhost:8500"
-    HealthPingIntervall = "5s"
-    Username = "" # optional
-    Password = "" # optional
-    
+     
     [MessageBroker]
     URL = "nats://localhost:4222"
     Username = "" # optional
@@ -174,4 +165,9 @@ be adopted to your requirements. The packages include default configs.
     
     [ZoneStateTopics]
     Prefix = "zonestate."
+
+    Secondaries = [
+    sec01.example.org,
+    sec02.example.org,
+    ]
     ```

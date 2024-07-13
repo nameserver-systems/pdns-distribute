@@ -1,13 +1,9 @@
 package utils
 
 import (
-	"crypto/sha256"
 	"os"
 	"strconv"
 	"strings"
-	"time"
-
-	"github.com/google/uuid"
 )
 
 func TrimAndLowerString(in string) string {
@@ -28,24 +24,6 @@ func ConvertStringToInt(s string) (int, error) {
 	i, err := strconv.Atoi(s)
 
 	return i, err
-}
-
-func GenerateUUID() (string, error) {
-	generatedUUID, err := uuid.NewUUID()
-	if err != nil {
-		return getHashedTime(), err
-	}
-
-	uuidstring := generatedUUID.String()
-
-	return uuidstring, err
-}
-
-func getHashedTime() string {
-	now := time.Now().String()
-	hash := sha256.Sum256([]byte(now))
-
-	return string(hash[:])
 }
 
 func EnsurePathExist(path string) error {

@@ -56,10 +56,7 @@ func startService(ms *msframe.Microservice) {
 }
 
 func closeService(ms *msframe.Microservice) {
-	err := ms.CloseMicroservice()
-	if err != nil {
-		logger.FatalErrLog(err)
-	}
+	ms.CloseMicroservice()
 }
 
 func startEventListening(ms *msframe.Microservice) {

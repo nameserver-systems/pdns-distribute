@@ -8,7 +8,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/dnsutils"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/healthchecks"
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
-	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/servicediscovery"
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelpowerdns"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
@@ -17,9 +16,9 @@ import (
 )
 
 var (
-	primaryzonecount     = promauto.NewGauge(prometheus.GaugeOpts{Name: "healthchecker_actual_primary_zone_count", Help: "The actual count of zones on primary"})
-	activesecondarycount = promauto.NewGauge(prometheus.GaugeOpts{Name: "healthchecker_actual_active_secondary_count", Help: "The actual count of active secondaries"})
-	refreshcyclestotal   = promauto.NewCounter(prometheus.CounterOpts{Name: "healthchecker_refresh_cycles_total", Help: "The total count of refresh cycles of primary zones and active secondaries"})
+	primaryzonecount   = promauto.NewGauge(prometheus.GaugeOpts{Name: "healthchecker_actual_primary_zone_count", Help: "The actual count of zones on primary"})
+	econdarycount      = promauto.NewGauge(prometheus.GaugeOpts{Name: "healthchecker_actual_secondary_count", Help: "The actual count of secondaries"})
+	refreshcyclestotal = promauto.NewCounter(prometheus.CounterOpts{Name: "healthchecker_refresh_cycles_total", Help: "The total count of refresh cycles of primary zones and active secondaries"})
 )
 
 func StartHealthServices(ms *microservice.Microservice) error {
@@ -64,16 +63,11 @@ func SetActiveZonesInState(serviceconfig *config.ServiceConfiguration, actualsta
 }
 
 func SetActiveSecondariesInState(ms *microservice.Microservice, actualstate *models.State) error {
-	activesecondaries, resolveerr := servicediscovery.GetActiveSecondaries(ms)
-	if resolveerr != nil {
-		return resolveerr
-	}
+	actualstate.SetActiveSecondaries(ms)
 
-	actualstate.SetActiveSecondaries(activesecondaries)
+	logger.DebugLog("[Set Active Secondaries] secondary state: " + fmt.Sprint(ms.Secondaries))
 
-	logger.DebugLog("[Set Active Secondaries] secondary state: " + fmt.Sprint(activesecondaries))
-
-	activesecondarycount.Set(float64(len(activesecondaries)))
+	econdarycount.Set(float64(len(ms.Secondaries)))
 
 	return nil
 }

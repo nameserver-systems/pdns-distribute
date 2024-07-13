@@ -4,10 +4,9 @@
 
 * Actual linux based os with systemd support (eg. Debian Buster)
 
-NATS and Consul instances can be run on primaries or secondaries. The only limit is, that only one instance of each
+NATS instances can be run on primaries or secondaries. The only limit is, that only one instance of each
 should be run on a system.
 
-* Consul cluster (service discovery)
 * NATS cluster (message broker)
 
 ### Primary

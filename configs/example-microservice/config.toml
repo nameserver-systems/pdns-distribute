@@ -12,12 +12,6 @@ DEBUG = true
 [Prometheus]
 Address = "localhost:9499" # turn off by set empty string
 
-[ServiceDiscovery]
-URL = "http://localhost:8500"
-HealthPingIntervall = "5s"
-Username = "" # optional
-Password = "" # optional
-
 [MessageBroker]
 URL = "nats://localhost:4222"
 Username = "" # optional
@@ -38,3 +32,8 @@ Req = "zonedata.request"
 Rep = "zonedata.reply"
 
 [AdditionalTopics]
+
+Secondaries = [
+sec01.example.org,
+sec02.example.org,
+]

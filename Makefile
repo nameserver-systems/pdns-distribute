@@ -69,11 +69,11 @@ download-dep:
 
 release: generate-goreleaser-config
 	goreleaser check
-	goreleaser release --rm-dist
+	goreleaser release --clean
 
 snapshot-release: generate-goreleaser-config
 	goreleaser check
-	goreleaser release --snapshot --rm-dist --skip-publish
+	goreleaser release --snapshot --clean --skip=publish
 
 generate-goreleaser-config:
 	go run cmd/release-config-generator/main.go -ignore release-config-generator,example-microservice
@@ -83,6 +83,6 @@ go-update-dependencies:
 	go mod tidy
 
 pre-build: generate-goreleaser-config
-	goreleaser build --snapshot --rm-dist
+	goreleaser build --snapshot --clean
 
 .PHONY: build pre-build test download-dep all release snapshot-release go-update-dependencies generate-goreleaser-config

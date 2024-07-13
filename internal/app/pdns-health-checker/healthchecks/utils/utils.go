@@ -8,14 +8,13 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/app/pdns-health-checker/models"
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 )
 
-func AppendIDToTopic(topic string, secondary servicediscovery.ResolvedService) string {
+func AppendIDToTopic(topic string, secondary models.HashedSecondary) string {
 	return topic + "." + secondary.ID
 }
 
-func GetSecondaryZoneStateMap(secondary servicediscovery.ResolvedService,
+func GetSecondaryZoneStateMap(secondary models.HashedSecondary,
 	hs *models.HealthService) (modelzone.Zonestatemap, error) {
 	const messagetimeout = 10 * time.Second
 
@@ -50,7 +49,7 @@ func GetSecondaryZoneStateMap(secondary servicediscovery.ResolvedService,
 	return transferobject.Statemap, nil
 }
 
-func GetZoneSerialFromSecondary(secondary servicediscovery.ResolvedService, hs *models.HealthService,
+func GetZoneSerialFromSecondary(secondary models.HashedSecondary, hs *models.HealthService,
 	zoneid string) (int32, error) {
 	const expectedzonecount = 1
 

@@ -109,23 +109,6 @@ func Test_trimSpace(t *testing.T) {
 	})
 }
 
-func Test_GenerateUUID(t *testing.T) {
-	t.Run("ok", func(t *testing.T) {
-		id, err := GenerateUUID()
-
-		require.NoError(t, err)
-		assert.NotNil(t, id)
-		assert.Len(t, id, 36)
-	})
-}
-
-func Test_getHashedTime(t *testing.T) {
-	t.Run("ok", func(t *testing.T) {
-		time := getHashedTime()
-		assert.NotEmpty(t, time)
-	})
-}
-
 func Test_EnsurePathExist(t *testing.T) {
 	t.Run("ok", func(t *testing.T) {
 		tmpDir, dirErr := os.MkdirTemp("", "")

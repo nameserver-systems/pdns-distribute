@@ -3,20 +3,21 @@ run:
   timeout: 3m
   issues-exit-code: 1
   tests: true
-  skip-dirs: []
-  skip-dirs-use-default: true
-  skip-files: []
   modules-download-mode: readonly
   allow-parallel-runners: true
 output:
-  format: colored-line-number
+  formats:
+    - format: colored-line-number
+      path: stderr
   print-issued-lines: true
   print-linter-name: true
   uniq-by-line: true
   sort-results: false
 linters:
   enable:
-    - megacheck
+    - gosimple
+    - staticcheck
+    - unused
     - govet
     - unconvert
     - prealloc
@@ -24,7 +25,7 @@ linters:
     - goprintffuncname
     - revive
     - goimports
-    - goerr113
+    - err113
     - godox
     - gocritic
     - goconst

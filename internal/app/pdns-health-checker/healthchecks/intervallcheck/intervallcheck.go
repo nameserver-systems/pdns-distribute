@@ -11,7 +11,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/internal/pkg/modelzone"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
@@ -53,7 +52,7 @@ func checkFreshnessOfSecondaries(hs *models.HealthService) {
 	intervalcyclestotal.Inc()
 }
 
-func checkSecondaryFreshness(secondary servicediscovery.ResolvedService, primaryzonestatemap modelzone.Zonestatemap,
+func checkSecondaryFreshness(secondary models.HashedSecondary, primaryzonestatemap modelzone.Zonestatemap,
 	hs *models.HealthService) error {
 	secondaryzonestatemap, err := utils.GetSecondaryZoneStateMap(secondary, hs)
 	if err != nil {

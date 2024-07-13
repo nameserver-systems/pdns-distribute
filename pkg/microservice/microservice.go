@@ -1,6 +1,7 @@
 package microservice
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"net"
 	"net/url"
@@ -10,7 +11,6 @@ import (
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/logger"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/messaging"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/metrics"
-	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/servicediscovery"
 	"github.com/nameserver-systems/pdns-distribute/pkg/microservice/utils"
 )
 
@@ -23,12 +23,11 @@ type Microservice struct {
 
 	ServiceURL string
 
-	SDRegistration   *servicediscovery.ServiceRegistration
-	ServiceDiscovery *servicediscovery.ServiceDiscovery
-
 	MessageBroker messaging.MessageBroker
 
 	Config *configuration.Configurationobject
+
+	Secondaries []string
 
 	SignalChannel chan os.Signal
 }
@@ -56,13 +55,6 @@ func (ms *Microservice) StartService() (err error) {
 	ms.loadMicroserviceSettings()
 
 	ms.MessageBroker.StartMessageBrokerConnection(serviceidentifier)
-
-	ms.prepareServiceRegistration()
-	ms.ServiceDiscovery, err = servicediscovery.StartServiceDiscoveryAndRegisterService(ms.SDRegistration)
-
-	if err != nil {
-		return err
-	}
 
 	return nil
 }
@@ -92,8 +84,6 @@ func generateServiceIdentifier(servicename string, ms *Microservice) string {
 func (ms *Microservice) initiateReferencedObjects() {
 	const signalchannelsize = 2
 
-	ms.SDRegistration = &servicediscovery.ServiceRegistration{}
-	ms.ServiceDiscovery = &servicediscovery.ServiceDiscovery{}
 	ms.Config = &configuration.Configurationobject{}
 	ms.SignalChannel = make(chan os.Signal, signalchannelsize)
 }
@@ -104,9 +94,7 @@ func (ms *Microservice) loadMicroserviceSettings() {
 	ms.Tags = append(ms.Tags, ms.Version)
 	ms.Meta = ms.Config.GetStringMapSettings("ServiceMetaData")
 
-	ms.SDRegistration.ServiceDiscoveryURL = ms.Config.GetStringSetting("ServiceDiscovery.URL")
-	ms.SDRegistration.ServiceDiscoveryHealthPingIntervall =
-		ms.Config.GetTimeDuration("ServiceDiscovery.HealthPingIntervall")
+	ms.Secondaries = ms.Config.GetStringSliceSetting("Secondaries")
 
 	ms.MessageBroker.URL = ms.Config.GetStringSetting("MessageBroker.URL")
 
@@ -118,9 +106,6 @@ func (ms *Microservice) loadMicroserviceSettings() {
 }
 
 func (ms *Microservice) loadBasicAuthCredentialsSettings() {
-	ms.SDRegistration.ServiceDiscoveryUsername = ms.Config.GetStringSetting("ServiceDiscovery.Username")
-	ms.SDRegistration.ServiceDiscoveryPassword = ms.Config.GetStringSetting("ServiceDiscovery.Password")
-
 	ms.MessageBroker.Username = ms.Config.GetStringSetting("MessageBroker.Username")
 	ms.MessageBroker.Password = ms.Config.GetStringSetting("MessageBroker.Password")
 }
@@ -146,28 +131,21 @@ func (ms *Microservice) checkAndStartMetricsEndpoint() {
 	}()
 }
 
-func (ms *Microservice) prepareServiceRegistration() {
-	ms.SDRegistration.MicroserviceID = ms.ID
-	ms.SDRegistration.MicroserviceName = ms.Name
-	ms.SDRegistration.MicroserviceTags = ms.Tags
-	ms.SDRegistration.MicroserviceMetadata = ms.Meta
-	ms.SDRegistration.MicroserviceURL = ms.ServiceURL
-}
-
 func (ms *Microservice) generateServiceID() error {
-	uuid, err := utils.GenerateUUID()
+	hostname, err := os.Hostname()
+	if err != nil {
+		logger.ErrorErrLog(err)
 
-	ms.ID = uuid
+		return err
+	}
+
+	ms.ID = fmt.Sprintf("%x", sha256.Sum256([]byte(hostname)))
 
 	return err
 }
 
-func (ms *Microservice) CloseMicroservice() error {
+func (ms *Microservice) CloseMicroservice() {
 	ms.MessageBroker.CloseConnection()
-
-	err := ms.ServiceDiscovery.DeregisterService()
-
-	return err
 }
 
 func (ms *Microservice) getCleanedServiceName() string {

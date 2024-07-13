@@ -50,7 +50,6 @@ services:
       context: ./build/ci/pdns-primary
       dockerfile: Containerfile
     depends_on:
-      - consul
       - nats
     networks:
       - pdns-distribute-net
@@ -62,20 +61,12 @@ services:
       context: ./build/ci/pdns-secondary
       dockerfile: Containerfile
     depends_on:
-      - consul
       - nats
     networks:
       - pdns-distribute-net
     ports:
       - "5300:53"
       - "8082:8082"
-  consul:
-    image: docker.io/hashicorp/consul:1.17.2
-    networks:
-      - pdns-distribute-net
-    ports:
-      - "8500:8500"
-      - "8501:8501"
   nats:
     image: docker.io/library/nats:2.10.17
     command: ["--config", "nats-server.conf", "--jetstream", "--server_name", "nats-js-test", "--routes", "nats://ruser:T0pS3cr3t@nats2:6223"]

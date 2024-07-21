@@ -24,10 +24,10 @@ install:
 	@for f in $(MODULEPATHS); do go install -i $${f}; done
 
 production-build: COMPILEFLAGS += -a
-production-build: mod-prepare lint clean strip-binaries compression
+production-build: mod-prepare lint clean build strip-binaries compression
 
 clean:
-	go clean -i -testcache ./...
+	go clean -i -testcache
 	rm -r -f ./bin/
 
 lint: inspect

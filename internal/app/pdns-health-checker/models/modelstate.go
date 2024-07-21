@@ -81,7 +81,7 @@ func (s *State) SetActiveSecondaries(microservice *msframe.Microservice) {
 		secondarystatelockcount.Dec()
 	}()
 
-	s.secondaries = make([]HashedSecondary, 0, len(microservice.Secondaries))
+	s.secondaries = make([]HashedSecondary, len(microservice.Secondaries))
 	for i, secondary := range microservice.Secondaries {
 		h := HashedSecondary{
 			ID:               fmt.Sprintf("%x", sha256.Sum256([]byte(secondary))),

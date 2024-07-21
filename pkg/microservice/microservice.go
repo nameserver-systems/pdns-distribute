@@ -94,7 +94,7 @@ func (ms *Microservice) loadMicroserviceSettings() {
 	ms.Tags = append(ms.Tags, ms.Version)
 	ms.Meta = ms.Config.GetStringMapSettings("ServiceMetaData")
 
-	ms.Secondaries = ms.Config.GetStringSliceSetting("Secondaries")
+	ms.Secondaries = ms.Config.GetStringSliceSetting("Secondaries.Hosts")
 
 	ms.MessageBroker.URL = ms.Config.GetStringSetting("MessageBroker.URL")
 

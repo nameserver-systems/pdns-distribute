@@ -25,7 +25,8 @@ Add = "zone.add"
 Mod = "zone.modified"
 Del = "zone.delete"
 
-Secondaries = [
+[Secondaries]
+Hosts = [
 sec01.example.org,
 sec02.example.org,
 ]

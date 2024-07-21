@@ -34,7 +34,8 @@ be adopted to your requirements. The packages include default configs.
     Mod = "zone.modified"
     Del = "zone.delete"
 
-    Secondaries = [
+    [Secondaries]
+    Hosts = [
     sec01.example.org,
     sec02.example.org,
     ]
@@ -80,7 +81,8 @@ be adopted to your requirements. The packages include default configs.
     PeriodicalCheckIntervall = "15m"
     NSEC3CheckIntervall = "15m"
 
-    Secondaries = [
+    [Secondaries]
+    Hosts = [
     sec01.example.org,
     sec02.example.org,
     ]
@@ -116,8 +118,9 @@ be adopted to your requirements. The packages include default configs.
     
     [ZoneDataTopics]
     Wildcard = "zonedata.*"
-    
-    Secondaries = [
+
+    [Secondaries]
+    Hosts = [
     sec01.example.org,
     sec02.example.org,
     ]
@@ -166,7 +169,8 @@ be adopted to your requirements. The packages include default configs.
     [ZoneStateTopics]
     Prefix = "zonestate."
 
-    Secondaries = [
+    [Secondaries]
+    Hosts = [
     sec01.example.org,
     sec02.example.org,
     ]

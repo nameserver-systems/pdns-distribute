@@ -36,7 +36,8 @@ Prefix = "zonedata."
 [ZoneStateTopics]
 Prefix = "zonestate."
 
-Secondaries = [
+[Secondaries]
+Hosts = [
 sec01.example.org,
 sec02.example.org,
 ]

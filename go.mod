@@ -5,7 +5,7 @@ go 1.22
 require (
 	github.com/miekg/dns v1.1.62
 	github.com/mvmaasakkers/certificates v0.7.2
-	github.com/nats-io/nats.go v1.36.0
+	github.com/nats-io/nats.go v1.37.0
 	github.com/prometheus/client_golang v1.20.3
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/viper v1.19.0

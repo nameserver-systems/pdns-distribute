@@ -11,8 +11,9 @@ output:
       path: stderr
   print-issued-lines: true
   print-linter-name: true
-  uniq-by-line: true
   sort-results: false
+issues:
+  uniq-by-line: true
 linters:
   enable:
     - gosimple
@@ -31,7 +32,7 @@ linters:
     - goconst
     - gci
     - dupl
-    - exportloopref
+    - copyloopvar
     - govet
   disable-all: false
   presets:

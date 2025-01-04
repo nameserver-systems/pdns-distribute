@@ -58,7 +58,7 @@ func generateCertificates(certificatepath, keypath, fqdn string) error {
 
 	certdata, keydata, certerr := cert.GenerateCertificate(certrequest, cacertdata, cakeydata)
 	if certerr != nil {
-		return caerr
+		return certerr
 	}
 
 	err2 := writeCertFiles(certificatepath, certdata, keypath, keydata)

@@ -8,7 +8,7 @@ require (
 	github.com/miekg/dns v1.1.63
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.39.1
-	github.com/prometheus/client_golang v1.21.0
+	github.com/prometheus/client_golang v1.21.1
 	github.com/rs/zerolog v1.33.0
 	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.10.0

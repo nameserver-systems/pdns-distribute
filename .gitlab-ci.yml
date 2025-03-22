@@ -113,7 +113,7 @@ make-documentation:
     paths:
       - site/
   script:
-    - "poetry install --no-dev"
+    - "poetry install --without dev"
     - "poetry run mkdocs build --clean --strict"
 
 deploy-documentation:

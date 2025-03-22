@@ -17,6 +17,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 )
 
+const expectedNSEC3PARAMS = "1 0 0 -" // RFC9276
+
 var (
 	ensurensec3cycles    = promauto.NewCounter(prometheus.CounterOpts{Name: "healthchecker_ensure_nsec3_cyles_total", Help: "The total count of ensure nse3 cycles for dnssec zones"})
 	powerdnsclierrtotal  = promauto.NewCounter(prometheus.CounterOpts{Name: "healthchecker_powerdns_cli_call_total", ConstLabels: map[string]string{"state": "failed"}, Help: "The total count of powerdns cli calls"})
@@ -65,25 +67,28 @@ func ensurensec3(hs *models.HealthService) {
 	intervallsigningsync.Dnssecprimaryzonecount.Set(float64(len(activeprimaryzones)))
 }
 
-func checkNecessityForUpdateNSEC3(hs *models.HealthService, pdnsconnection modelpowerdns.PDNSconnectionobject, zoneid string) {
-	mdata, mderr := dnsutils.GetZoneMetaDataFromPrimary(pdnsconnection, zoneid, "NSEC3PARAM")
-	if mderr != nil {
-		logger.ErrorErrLog(mderr)
+func checkNecessityForUpdateNSEC3(hs *models.HealthService, pdnsconnection modelpowerdns.PDNSconnectionobject, zoneID string) {
+	mData, mdErr := dnsutils.GetZoneMetaDataFromPrimary(pdnsconnection, zoneID, "NSEC3PARAM")
+	if mdErr != nil {
+		logger.ErrorErrLog(mdErr)
 	}
 
-	if len(mdata) == 0 {
-		err := setnsec3(zoneid)
-		if err != nil {
-			logger.ErrorErrLog(err)
+	if len(mData) > 0 {
+		if mData[0] == expectedNSEC3PARAMS {
+			return
 		}
-
-		rectifyerr := dnsutils.RectifyZone(pdnsconnection, zoneid)
-		if rectifyerr != nil {
-			logger.ErrorErrLog(rectifyerr)
-		}
-
-		eventutils.PublishChangeZoneEvent(hs.Ms, hs.Conf.ChangeEventTopic, zoneid)
 	}
+	err := setnsec3(zoneID)
+	if err != nil {
+		logger.ErrorErrLog(err)
+	}
+
+	rectifyErr := dnsutils.RectifyZone(pdnsconnection, zoneID)
+	if rectifyErr != nil {
+		logger.ErrorErrLog(rectifyErr)
+	}
+
+	eventutils.PublishChangeZoneEvent(hs.Ms, hs.Conf.ChangeEventTopic, zoneID)
 }
 
 func setnsec3(zoneid string) error {

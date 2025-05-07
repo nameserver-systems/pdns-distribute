@@ -5,7 +5,7 @@ go 1.24
 toolchain go1.24.3
 
 require (
-	github.com/miekg/dns v1.1.64
+	github.com/miekg/dns v1.1.65
 	github.com/mvmaasakkers/certificates v0.7.2
 	github.com/nats-io/nats.go v1.42.0
 	github.com/prometheus/client_golang v1.22.0

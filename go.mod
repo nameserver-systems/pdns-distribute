@@ -2,7 +2,7 @@ module github.com/nameserver-systems/pdns-distribute
 
 go 1.24
 
-toolchain go1.24.1
+toolchain go1.24.3
 
 require (
 	github.com/miekg/dns v1.1.64

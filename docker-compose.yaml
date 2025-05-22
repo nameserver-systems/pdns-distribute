@@ -68,7 +68,7 @@ services:
       - "5300:53"
       - "8082:8082"
   nats:
-    image: docker.io/library/nats:2.11.3
+    image: docker.io/library/nats:2.11.4
     command: ["--config", "nats-server.conf", "--jetstream", "--server_name", "nats-js-test", "--routes", "nats://ruser:T0pS3cr3t@nats2:6223"]
     networks:
       - pdns-distribute-net
@@ -76,7 +76,7 @@ services:
       - "4222:4222"
       - "8222:8222"
   nats2:
-    image: docker.io/library/nats:2.11.3
+    image: docker.io/library/nats:2.11.4
     command: ["--config", "nats-server.conf", "--jetstream", "--server_name", "nats-js-test2", "--routes", "nats://ruser:T0pS3cr3t@nats:6222", "--port", "4223", "--http_port", "8223", "--cluster", "nats://nats2:6223"]
     networks:
       - pdns-distribute-net

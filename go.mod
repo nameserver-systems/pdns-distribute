@@ -7,7 +7,7 @@ toolchain go1.24.3
 require (
 	github.com/miekg/dns v1.1.66
 	github.com/mvmaasakkers/certificates v0.7.2
-	github.com/nats-io/nats.go v1.42.0
+	github.com/nats-io/nats.go v1.43.0
 	github.com/prometheus/client_golang v1.22.0
 	github.com/rs/zerolog v1.34.0
 	github.com/spf13/viper v1.20.1

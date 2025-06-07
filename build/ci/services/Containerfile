@@ -14,7 +14,7 @@ RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=readonly -ldflags "-s -w -e
 RUN CGO_ENABLED=0 GOOS=linux go build -trimpath -mod=readonly -ldflags "-s -w -extldflags '-static'" -tags osusergo,netgo -o /pdns-zone-provider ./cmd/pdns-zone-provider/main.go
 
 
-FROM docker.io/library/alpine:3.21.3
+FROM docker.io/library/alpine:3.22.0
 
 COPY ./build/ci/services/config/pdns-api-proxy/config.toml /etc/pdns-api-proxy/config.toml
 COPY ./build/ci/services/config/pdns-health-checker/config.toml /etc/pdns-health-checker/config.toml
